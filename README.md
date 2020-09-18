@@ -3,6 +3,8 @@
 I provide a set of scripts that download the data from Sciensano, the Belgian 
 source for numbers on covid, and subsequently provide basic summary statistics.
 
+**WORK IN PROGRESS**
+
 ## Goal and a warning
 
 This is not a solid statistical analysis, but allows you to browse the data
