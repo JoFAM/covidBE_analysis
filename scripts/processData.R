@@ -1,5 +1,8 @@
 # This script loads the data
-
+source("scripts/checkPackages.R")
+source("functions/refresh.R")
+source("functions/helperfunctions.R")
+source("functions/add_totals.R")
 #--------------------------------------
 # Read in the raw datasets
 
@@ -16,7 +19,15 @@ rawcases<- refresh("cases",
                    })
 
 rawtest <- refresh("tests",
-                   "COVID19BE_tests.csv")
+                   "COVID19BE_tests.csv",
+                   force = TRUE,
+                   process = function(x){
+                     add_totals(x,
+                                values = "TESTS_ALL",
+                                groups = "PROVINCE",
+                                along = "DATE",
+                                name = "All")
+                   })
 
 rawhospit <- refresh("hospitalisations",
                      "COVID19BE_HOSP.csv",

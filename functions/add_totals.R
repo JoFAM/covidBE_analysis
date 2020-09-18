@@ -7,7 +7,7 @@
 source("functions/helperfunctions.R")
 
 add_totals <- function(x,values, along, groups, name = "All",
-                       na.rm = FALSE){
+                       na.rm = FALSE, use.na = TRUE){
   # Check the groups
   dims <- length(groups)
   # Check the names
@@ -17,6 +17,10 @@ add_totals <- function(x,values, along, groups, name = "All",
   # make the tapply list
   applyby <- x[c(groups, along)]
   mforsum <- seq.int(dims)
+  
+  if(use.na){
+    applyby <- lapply(applyby, function(x) {x[is.na(x)] <- "unknown";x})
+  }
   
   # How many values
   morevalues <- length(values) > 1
@@ -29,7 +33,7 @@ add_totals <- function(x,values, along, groups, name = "All",
   }
   
   tmp <- msums(values[1])
-  
+
   # reprocess the names
   dnames <- dimnames(tmp)
   
