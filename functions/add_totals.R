@@ -43,7 +43,8 @@ add_totals <- function(x,values, along, groups, name = "All",
   }
   dimnames(tmp) <- dnames
   out <- as.data.frame(as.table(tmp),
-                       responseName = values[1])
+                       responseName = values[1],
+                       stringsAsFactors = FALSE)
   
   if(morevalues){
     
