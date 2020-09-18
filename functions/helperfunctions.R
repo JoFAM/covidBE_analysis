@@ -31,54 +31,23 @@ calculate_change <- function(x,n=7,type=c("abs","rel")){
   return(c(rep(NA,n),tmp))
 }
 
-#-----------------------------------------------
-# Add the totals of the groups mentioned
-# x : the data
-# values : the variable with the values
-# groups : the variable(s) with the groups
-# along : the variable(s) along which the totals should be calculated
-add_totals <- function(x,values, along, groups, name = "All",
-                       na.rm = FALSE){
-  
-  # Check the groups
-  dims <- length(groups)
-  # Check the names
-  if(length(name) == 1) {
-    name <- rep(name,dims)
-  }
-  # make the tapply list
-  applyby <- x[c(groups, along)]
-  mforsum <- seq.int(dims)
+#-------------------------------
+# Clean up impossible combinations
 
-  # How many values
-  morevalues <- length(values) > 1
-  
-  # add margins
-  msums <- function(v){
-    tab <- tapply(x[[v]], applyby, sum, na.rm = na.rm)
-    tab <- replaceby0(tab)
-    addmargins(tab, margin = mforsum)
-  }
-  
-  tmp <- msums(values[1])
-  
-  # reprocess the names
-  dnames <- dimnames(tmp)
-  
-  for(i in seq.int(dims)){
-    nnames <- length(dnames[[i]])
-    dnames[[i]][nnames] <- name[i]
-  }
-  dimnames(tmp) <- dnames
-  out <- as.data.frame(as.table(tmp),
-                       responseName = values[1])
-  
-  if(morevalues){
-    
-    for(i in values[-1]){
-      extra <- msums(i)
-      out[[i]] <- as.vector(extra)
-    }
-  }
-  return(out)
+keep_combs<- function(region,province){
+  poss <- c(
+    "Brussels-Brussels",
+    "Antwerpen-Flanders",
+    "BrabantWallon-Wallonia",
+    "Hainout-Wallonia",
+    "Liège-Wallonia",
+    "Limburg-Flanders",
+    "Luxembourg-Wallonia",
+    "Namur-Wallonia",
+    "VlaamsBrabant-Flanders",
+    "OostVlaanderen-Flanders",
+    "WestVlaanderen-Flanders"
+  )
+  tmp <- paste(province, region, sep = "-")
+  id <- tmp %in% poss | grepl("All-",tmp)
 }

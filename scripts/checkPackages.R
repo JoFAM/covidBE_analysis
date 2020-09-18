@@ -1,7 +1,8 @@
 # Checks and loads the necessary packages
 #----------------------------------------
 
-toload <- c("dplyr",
+toload <- c("shiny",
+            "dplyr",
             "tidyr",
             "shinydashboard",
             "ggplot2",

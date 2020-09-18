@@ -36,7 +36,7 @@ up as follows :
 **When everything is finished** you will be able to run this from within RStudio using :
 
 ```
-runGitHub("JoFAM/CovidAgeDistBE")
+runGitHub("JoFAM/covidBE_analysis")
 ```
 ## Actions
 

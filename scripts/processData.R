@@ -1,5 +1,8 @@
 # This script loads the data
 
+#--------------------------------------
+# Read in the raw datasets
+
 rawcases<- refresh("cases",
                    "COVID19BE_CASES_AGESEX.csv",
                    process = function(x){
@@ -8,5 +11,26 @@ rawcases<- refresh("cases",
                                 groups = c("PROVINCE","REGION",
                                            "SEX","AGEGROUP"),
                                 along = c("DATE"),
-                                name = c("All","Belgium","All","All"))
+                                name = c("All","Belgium","All","All")) %>%
+                       filter(keep_combs(REGION,PROVINCE))
                    })
+
+rawtest <- refresh("tests",
+                   "COVID19BE_tests.csv")
+
+rawhospit <- refresh("hospitalisations",
+                     "COVID19BE_HOSP.csv",
+                     process = function(x){
+                       add_totals(x,
+                                  values = c("TOTAL_IN",
+                                             "TOTAL_IN_ICU",
+                                             "TOTAL_IN_RESP",
+                                             "TOTAL_IN_ECMO",
+                                             "NEW_IN",
+                                             "NEW_OUT"),
+                                  groups = c("PROVINCE",
+                                             "REGION"),
+                                  along = "DATE",
+                                  name = c("All","All")) %>%
+                         filter(keep_combs(REGION,PROVINCE))
+                     })
