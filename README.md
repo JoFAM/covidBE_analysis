@@ -5,6 +5,8 @@ source for numbers on covid, and subsequently provide basic summary statistics.
 
 **WORK IN PROGRESS**
 
+**Currently you can use the script processData.R to download the data from Sciensano and add totals for Belgium and the regions. The other functionality will be added when time allows.**
+
 ## Goal and a warning
 
 This is not a solid statistical analysis, but allows you to browse the data
