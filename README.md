@@ -33,7 +33,7 @@ up as follows :
  the necessary steps to run whatever script necessary.
  - **ui.R** and **server.R** form the actual application.
  
-You can run this from within RStudio using :
+**When everything is finished** you will be able to run this from within RStudio using :
 
 ```
 runGitHub("JoFAM/CovidAgeDistBE")
