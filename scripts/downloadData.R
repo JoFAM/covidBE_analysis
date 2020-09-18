@@ -47,3 +47,17 @@ rawhospit <- refresh("hospitalisations",
                                   name = c("All","Belgium")) %>%
                          filter(keep_combs(REGION,PROVINCE))
                      })
+
+rawdeaths <- refresh("deaths",
+                     "COVID19BE_MORT.csv",
+                     process = function(x){
+                       add_totals(x,
+                                  values = "DEATHS",
+                                  groups = c("REGION",
+                                             "SEX","AGEGROUP"),
+                                  along = c("DATE"),
+                                  name = c("Belgium","All","All")) 
+                     })
+
+rawmunicipalities <- refresh("municipalities",
+                             "COVID19BE_CASES_MUNI.csv")
