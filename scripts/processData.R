@@ -20,13 +20,15 @@ rawcases<- refresh("cases",
 
 rawtest <- refresh("tests",
                    "COVID19BE_tests.csv",
-                   force = TRUE,
                    process = function(x){
-                     add_totals(x,
-                                values = "TESTS_ALL",
-                                groups = "PROVINCE",
+                     mutate(x,
+                            PROVINCE = add_unknown(PROVINCE),
+                            REGION = add_region(PROVINCE)) %>%
+                     add_totals(values = "TESTS_ALL",
+                                groups = c("PROVINCE","REGION"),
                                 along = "DATE",
-                                name = "All")
+                                name = c("All","Belgium")) %>%
+                       filter(keep_combs(REGION,PROVINCE))
                    })
 
 rawhospit <- refresh("hospitalisations",
@@ -42,6 +44,6 @@ rawhospit <- refresh("hospitalisations",
                                   groups = c("PROVINCE",
                                              "REGION"),
                                   along = "DATE",
-                                  name = c("All","All")) %>%
+                                  name = c("All","Belgium")) %>%
                          filter(keep_combs(REGION,PROVINCE))
                      })

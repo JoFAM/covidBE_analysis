@@ -1,4 +1,35 @@
 #' This file contains a number of convenience functions for processing
+#' 
+
+#----------------------------------
+# Link provinces to regions
+regions <- c(
+  "Brussels"= "Brussels",
+  "Antwerpen"= "Flanders",
+  "BrabantWallon" = "Wallonia",
+  "Hainaut" = "Wallonia",
+  "Liège" = "Wallonia",
+  "Limburg" = "Flanders",
+  "Luxembourg" = "Wallonia",
+  "Namur" = "Wallonia",
+  "VlaamsBrabant" = "Flanders",
+  "OostVlaanderen" = "Flanders",
+  "WestVlaanderen" = "Flanders",
+  "unknown" = "unknown"
+)
+
+#----------------------------------
+# Translates provinces to regions.
+add_region <- function(x){
+  regions[x]
+}
+
+#----------------------------------
+# Replace NA by "unknown"
+add_unknown <- function(x){
+  x[is.na(x)] <- "unknown"
+  return(x)
+}
 
 #----------------------------------
 # Convert the date and cut the last day
@@ -35,19 +66,7 @@ calculate_change <- function(x,n=7,type=c("abs","rel")){
 # Clean up impossible combinations
 
 keep_combs<- function(region,province){
-  poss <- c(
-    "Brussels-Brussels",
-    "Antwerpen-Flanders",
-    "BrabantWallon-Wallonia",
-    "Hainout-Wallonia",
-    "Liège-Wallonia",
-    "Limburg-Flanders",
-    "Luxembourg-Wallonia",
-    "Namur-Wallonia",
-    "VlaamsBrabant-Flanders",
-    "OostVlaanderen-Flanders",
-    "WestVlaanderen-Flanders"
-  )
+  poss <- paste(names(regions), regions, sep = "-")
   tmp <- paste(province, region, sep = "-")
   id <- tmp %in% poss | grepl("All-",tmp)
 }

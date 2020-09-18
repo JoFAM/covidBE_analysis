@@ -19,7 +19,7 @@ add_totals <- function(x,values, along, groups, name = "All",
   mforsum <- seq.int(dims)
   
   if(use.na){
-    applyby <- lapply(applyby, function(x) {x[is.na(x)] <- "unknown";x})
+    applyby <- lapply(applyby, add_unknown)
   }
   
   # How many values
