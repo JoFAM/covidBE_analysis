@@ -13,10 +13,12 @@ fname <- dir("Data", pattern = "muntycumulative")
 hasfile <- length(fname) > 0
 
 # Create start date for reading
-startdate <- if(hasfile) readstamp(fname) else as.Date("2020-03-31")
-
+startdate <- if(hasfile) readstamp(fname)  else as.Date("2020-03-31")
+if(startdate >= Sys.Date() )
+  stop("You have the latest data already.")
 # Create the links to be downloaded
-daterange <- seq(startdate,Sys.Date(),
+# Don't download the latest file, as that can still change.
+daterange <- seq(startdate,Sys.Date() - 1,
                  by = "1 day")
 infile <- format(daterange, "%Y%m%d")
 
@@ -28,7 +30,7 @@ fnames <- paste0("https://epistat.sciensano.be/Data/",
 
 # Create first dataset
 if(hasfile){
-  muntycumulative <- read.csv(file.path("Data",fname), fileEncoding = "UTF8")
+  muntycumulative <- read.csv(file.path("Data",fname))
   
   tmpdate <- as.Date(muntycumulative$DATE)
   id <- which(tmpdate == max(tmpdate))
@@ -78,6 +80,6 @@ message("Save the file.")
 write.csv(muntycumulative,
           file = file.path("Data",
                            stamp("muntycumulative")),
-          fileEncoding = "UFT8",
           row.names = FALSE)
+if(hasfile) unlink(file.path("Data",fname))
 message("Succes!")
