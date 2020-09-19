@@ -42,6 +42,13 @@ runGitHub("JoFAM/covidBE_analysis")
 ```
 ## Actions
 
+### Scripts
+
+ - `checkPackages.R`: checks whether the necessary packages are installed for the shiny app, and loads them if they are.
+ - `create_cumulative.R`: creates a dataset for municipalities over the dates by downloading and combining the historical data obtained from Sciensano. This is not part of the app, as it takes quite a while to download. The result is datestamped and stored in the folder **Data**. Running the script again only downloads the data that is missing in the file. 
+ - `createMapPolygons.R`: creates a set of `sf` geometry objects containing the shapes for the administrative regions, and stores them as RDS files. These files are added to the repo, the script is only there for reproducibility.
+ - `downloadData.R`: downloads the latest datafiles from Sciensano and prepares the data for the app.
+
 The shiny application takes the following steps:
 
  - download the data from https://epistat.wiv-isp.be/Covid/

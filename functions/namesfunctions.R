@@ -28,6 +28,14 @@ translate_provinces <- function(x_nl, x_fr, region){
   )
 }
 
+translate_munty <- function(x_nl, x_fr,region){
+  case_when(
+    region == "Flanders" ~ x_nl,
+    region == "Wallonia" ~ x_fr,
+    region == "Brussels" ~ x_nl
+  )
+}
+
 # Remove dashes and spaces, and capitalize every first letter
 clean_prov <- function(x){
   str_replace(x, "-", " ") %>%
