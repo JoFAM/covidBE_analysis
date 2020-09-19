@@ -49,3 +49,11 @@ The shiny application takes the following steps:
  - save this data with the date as a timestamp. When you rerun the code the 
  next day, the timestamp will tell the code to download the newest data.
  - summarise the data in a set of graphs I myself find informative. But you have the data and the scripts, so have a blast.
+ 
+## A word of thanks
+
+ - Sciensano for providing the data used in this analysis.
+ - StatBel for providing shapedata to create maps
+ - @DaafDP for the ideas about the maps and some interesting code (see https://github.com/DaafDP/Corona)
+ - @DaafDP also for sending me the data on number of inhabitants and a bunch of shapefiles I used for testing before I found a more reproducible way to add them to this project.
+ 
