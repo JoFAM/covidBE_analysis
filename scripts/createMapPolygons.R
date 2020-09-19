@@ -27,9 +27,9 @@ agglo <- st_read(geojsonfile)
 # Keep the names
 shapeinfo <- st_set_geometry(agglo, NULL) %>%
   select(cd_munty_refnis, tx_munty_descr_nl,
-         cd_prov_refnis, tx_prov_descr_nl,
-         tx_prov_descr_fr, cd_rgn_refnis,
-         tx_rgn_descr_nl) %>%
+         cd_dstr_refnis, tx_adm_dstr_descr_nl, tx_adm_dstr_descr_fr,
+         cd_prov_refnis, tx_prov_descr_nl, tx_prov_descr_fr, 
+         cd_rgn_refnis, tx_rgn_descr_nl) %>%
   unique() %>%
   process_shapeinfo()
 
@@ -43,6 +43,12 @@ muntymap <- agglo %>% group_by(cd_munty_refnis) %>%
   summarise(do_union = TRUE) %>%
   ms_simplify(keep = 0.01, weighting = 0.9)%>%
   full_join(shapeinfo, by = "cd_munty_refnis")
+
+dstrmap <- muntymap %>% group_by(cd_dstr_refnis) %>%
+  summarise(do_union = TRUE) %>%
+  full_join(unique(shapeinfo[c("cd_dstr_refnis","names_dstr",
+                               "names_prov","names_rgn")]),
+            by = "cd_dstr_refnis")
 
 provmap <- muntymap %>% group_by(cd_prov_refnis) %>%
   summarise(do_union = TRUE) %>%
@@ -59,6 +65,8 @@ rgnmap <- muntymap %>% group_by(cd_rgn_refnis) %>%
 # Save the result
 saveRDS(muntymap,
         file = "Data/Maps/muntymap.RDS")
+saveRDS(dstrmap,
+        file = "Data/Maps/dstrmap.RDS")
 saveRDS(provmap,
         file = "Data/Maps/provmap.RDS")
 saveRDS(rgnmap,
