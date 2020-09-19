@@ -54,3 +54,17 @@ rgnmap <- muntymap %>% group_by(cd_rgn_refnis) %>%
   summarise(do_union = TRUE) %>%
   full_join(unique(shapeinfo[c("cd_rgn_refnis","names_rgn")]),
             by = "cd_rgn_refnis")
+
+#---------------------------------------
+# Save the result
+saveRDS(muntymap,
+        file = "Data/Maps/muntymap.RDS")
+saveRDS(provmap,
+        file = "Data/Maps/provmap.RDS")
+saveRDS(rgnmap,
+        file = "Data/Maps/rgnmap.RDS")
+
+#---------------------------------------
+# Cleanup
+unlink("Data/Maps/statbel.zip")
+unlink("Data/Maps/statbel", recursive = TRUE)
