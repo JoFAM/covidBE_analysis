@@ -70,3 +70,17 @@ keep_combs<- function(region,province){
   tmp <- paste(province, region, sep = "-")
   id <- tmp %in% poss | grepl("All-",tmp)
 }
+
+#-------------------------------
+# categorize cases
+bin_cases <- function(x, breaks = c(0,5,10,15,20,30,50,100,+Inf),
+                      labels = c("<5","5-9","10-14","15-19",
+                                 "20-29","30-49","50-99","100+")){
+  idless <- x == "<5"
+  x[idless] <- NA
+  x <- cut(as.numeric(x), 
+           breaks = breaks, labels = labels,
+           right = FALSE)
+  x[idless] <- "<5"
+  x
+}

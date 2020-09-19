@@ -3,6 +3,7 @@ source("scripts/checkPackages.R")
 source("functions/refresh.R")
 source("functions/helperfunctions.R")
 source("functions/add_totals.R")
+source("functions/namesfunctions.R")
 #--------------------------------------
 # Read in the raw datasets
 
@@ -65,11 +66,32 @@ rawdeaths <- refresh("deaths",
 
 ## Numbers for each municipality
 rawmunicipalities <- refresh("municipalities",
-                             "COVID19BE_CASES_MUNI.csv")
+                             "COVID19BE_CASES_MUNI.csv") %>%
+  mutate(REGION = translate_regions(TX_RGN_DESCR_NL),
+         PROVINCE = translate_provinces(TX_PROV_DESCR_NL,
+                                        TX_PROV_DESCR_FR,
+                                        REGION),
+         DISTRICT = translate_districts(TX_ADM_DSTR_DESCR_NL,
+                                        TX_ADM_DSTR_DESCR_NL,
+                                        REGION),
+         MUNTY = translate_munty(TX_DESCR_NL,
+                                 TX_DESCR_FR,
+                                 REGION),
+         cd_munty_refnis = NIS5,
+         binned = bin_cases(CASES)) %>%
+  select(REGION, PROVINCE, DISTRICT,MUNTY,
+         cd_munty_refnis, cases = CASES,
+         binned,DATE) %>%
+  na.omit()
+  
+saveRDS(rawmunicipalities,
+        file = file.path("Processed",
+                         "binnedmunty.RDS"))
 
 #--------------------------------------
 # Combine the raw datasets into a number of separate 
 # datasets that can be used for analysis.
+# Smooth the data using a 7 day window where possible.
 if(!dir.exists("Processed")) dir.create("Processed")
 
 ## Combine cases, tests, hospitalisations and deaths by date and region
@@ -101,3 +123,5 @@ regionalsmooth <- full_join(casetemp,
 
 saveRDS(regionalsmooth, file = file.path("Processed",
                                          "regionalsmooth.RDS"))
+
+# 
