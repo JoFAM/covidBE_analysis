@@ -60,10 +60,12 @@ p <- ggplot(pdata, aes(x=TESTS_ALL, y = CASES)) +
 anim <- p + transition_reveal(DATE) +
   labs(title = "Date: {pdata$DATE[round(frame)]} - positivity rate: {sprintf('%1.1f', pdata$posrate[round(frame)]) } % - data for Belgium")
 
-
-animate(anim, nframes = nrow(pdata) + 20,
-         fps = 5, end_pause = 20)
+# In case you want to check it in the viewer.
+# animate(anim, nframes = nrow(pdata) + 20,
+#          fps = 5, end_pause = 20)
 
 anim_save("testVsCases.gif",
           anim,
-          path = "Data")
+          path = "Data",
+          nframes = nrow(pdata) + 20,
+          fps = 5, end_pause = 20)
