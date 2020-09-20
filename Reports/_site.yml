@@ -1,0 +1,16 @@
+name: "covid19-be"
+output_dir: "../docs"
+navbar: 
+  title: "Analyses related to COVID in Belgium"
+  left: 
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+    - text: "Articles"
+      icon: fa-book
+      menu: 
+        - text: "False posivites"
+          href: FalseDiscoveryRate.html
+output:
+  html_document:
+    theme: cosmo

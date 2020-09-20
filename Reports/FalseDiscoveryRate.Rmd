@@ -1,0 +1,102 @@
+---
+title: "Theory of false positives"
+author: "Joris Meys"
+date: "20/09/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+## Flaws in diagnostic tests
+
+Diagnostic tests aren't perfect. They can give you a wrong result in two ways :
+
+ - **false positive** : you test positive while you're not.
+ - **false negative** : you test negative while you're infected.
+ 
+As a false negative is far more worrisome than a false positive, diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive. The *specificity* (i.e. the fraction of true negatives over all negatives) becomes smaller with increased sensitivity.
+
+## False positives in your test population.
+
+The relative number of false positives depends on a number of factors :
+
+ - *sensitivity Se* : the proportion of infections detected by the test.
+ - *specificity Sp* : the proportion of healthy people detected by the test. So the false positivity rate is $1 - Sp$.
+ - *prevalence P* : the true proportion of infections in the tested population.
+ 
+The proportion of true positives is calculated as $P \times Sp$, i.e. the proportion of real positives times the "detection rate" or specificity. Likewise, false positives over the entire test population can be calculated as $(1 - P) \times (1 - Sp)$. $(1 - P)$ is here the proportion of true negatives, and a proportion of $(1 - Sp)$ of those will test positive even though they're not ill.
+
+This can be combined in an easy equation that gives you the **false discovery rate** $FDR$, or the proportion of false positives over all positive test results. This looks as follows:
+
+$$
+FDR = \displaystyle\frac{(1 - P) \times (1 - Sp)}{(P \times Se ) + (( 1 - P) \times (1 - Sp))}
+$$
+
+You calculate the fraction of false positives on all positive results if you know how sensitive and specific your test is, and how much people are really infected. But we don't know that, we only know the proportion of positive tests $N$. This is the sum of true and false positives:
+
+$$
+N = (P \times Se) + ((1 - P) \times (1 - Sp))
+$$
+
+This makes :
+
+$$
+P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
+$$
+
+Now we can use these calculations to get an indication of the false discovery rate $FDR$ given a certain sensitivity, specificity and positive test rate. The positive test rate is observed, sensitivity and specificity are characteristics from the test used. Differences in testing strategy will impact the positive test rate, but won't affect the characteristics of the tests. Obviously I assume here that the test is carried out consistently by skilled people.
+
+## A simulation
+
+It's difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used. 
+### The function to calculate FDR
+
+Based on the previous calculations, we can now make a function that calculates the true positives $p$ and false discovery rate $FDR$ 
+```{r}
+calc_p <- function(n, sp, se){
+        p <- (n + sp - 1)/ (se + sp - 1)
+        # You can't have less positive cases than expected by
+        # the proportion of false positives when there's no
+        # infections!
+        p[n < (1-sp)] <- NA
+        p
+}
+calc_fdr <- function(n, sp, se){
+        p <- calc_p(n, sp, se)
+        np <- 1 - p
+        np * (1 - sp) / (p*se + (np * (1 - sp)))
+}
+```
+
+Keep in mind that the positive test rate can never be smaller than $1 - Sp$. If that were the case, you'd have fewer positive test results than the fraction false positives, and that is impossible. If there's no positive cases and you expect 2% false positives, your positive rate has to be at least 2%.
+
+### False discovery rate in function of positive results.
+
+As Belgium reported as few as 0.5% positive results in the testing procedure, we can assume that the specificity should be at least 99.5%. So let's go with that. The relation between the false discovery rate and the fraction of positive results is then given below. Again, we assume that the tests are all carried out according to standard.
+
+The influence of the fraction of positive test results on the false discovery rate is shown below.
+
+```{r}
+# Make the data:
+theseq <- seq(0.005,0.1, by = 0.001)
+pdata <- tibble(
+        posrate = rep(theseq, 3),
+        specificity = rep(c("99.5%","99%","95%"), 
+                          each = length(theseq) ),
+        fdr = c(calc_fdr(theseq, 0.995,0.8),
+                calc_fdr(theseq, 0.99, 0.8),
+                calc_fdr(theseq,0.97,0.8))
+) %>% na.omit()
+ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
+        geom_line(lwd = 2) +
+        scale_x_continuous(labels = scales::percent) +
+        scale_y_continuous(labels = scales::percent) +
+        labs(x = "Fraction positive results in the tests",
+             y = "False Discovery Rate",
+             title = "Effect fraction positive results on FDR") +
+        theme_bw() +
+        scale_color_viridis_d()
+```

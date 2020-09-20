@@ -6,3 +6,4 @@ Data/*
 *.RDS
 Processed/*
 *.png
+/Reports/*.html

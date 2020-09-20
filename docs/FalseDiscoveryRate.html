@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Joris Meys" />
+
+
+<title>Theory of false positives</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Analyses related to COVID in Belgium</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="FalseDiscoveryRate.html">False posivites</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Theory of false positives</h1>
+<h4 class="author">Joris Meys</h4>
+<h4 class="date">20/09/2020</h4>
+
+</div>
+
+
+<div id="flaws-in-diagnostic-tests" class="section level2">
+<h2>Flaws in diagnostic tests</h2>
+<p>Diagnostic tests aren’t perfect. They can give you a wrong result in two ways :</p>
+<ul>
+<li><strong>false positive</strong> : you test positive while you’re not.</li>
+<li><strong>false negative</strong> : you test negative while you’re infected.</li>
+</ul>
+<p>As a false negative is far more worrisome than a false positive, diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive. The <em>specificity</em> (i.e. the fraction of true negatives over all negatives) becomes smaller with increased sensitivity.</p>
+</div>
+<div id="false-positives-in-your-test-population." class="section level2">
+<h2>False positives in your test population.</h2>
+<p>The relative number of false positives depends on a number of factors :</p>
+<ul>
+<li><em>sensitivity Se</em> : the proportion of infections detected by the test.</li>
+<li><em>specificity Sp</em> : the proportion of healthy people detected by the test. So the false positivity rate is <span class="math inline">\(1 - Sp\)</span>.</li>
+<li><em>prevalence P</em> : the true proportion of infections in the tested population.</li>
+</ul>
+<p>The proportion of true positives is calculated as <span class="math inline">\(P \times Sp\)</span>, i.e. the proportion of real positives times the “detection rate” or specificity. Likewise, false positives over the entire test population can be calculated as <span class="math inline">\((1 - P) \times (1 - Sp)\)</span>. <span class="math inline">\((1 - P)\)</span> is here the proportion of true negatives, and a proportion of <span class="math inline">\((1 - Sp)\)</span> of those will test positive even though they’re not ill.</p>
+<p>This can be combined in an easy equation that gives you the <strong>false discovery rate</strong> <span class="math inline">\(FDR\)</span>, or the proportion of false positives over all positive test results. This looks as follows:</p>
+<p><span class="math display">\[
+FDR = \displaystyle\frac{(1 - P) \times (1 - Sp)}{(P \times Se ) + (( 1 - P) \times (1 - Sp))}
+\]</span></p>
+<p>You calculate the fraction of false positives on all positive results if you know how sensitive and specific your test is, and how much people are really infected. But we don’t know that, we only know the proportion of positive tests <span class="math inline">\(N\)</span>. This is the sum of true and false positives:</p>
+<p><span class="math display">\[
+N = (P \times Se) + ((1 - P) \times (1 - Sp))
+\]</span></p>
+<p>This makes :</p>
+<p><span class="math display">\[
+P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
+\]</span></p>
+<p>Now we can use these calculations to get an indication of the false discovery rate <span class="math inline">\(FDR\)</span> given a certain sensitivity, specificity and positive test rate. The positive test rate is observed, sensitivity and specificity are characteristics from the test used. Differences in testing strategy will impact the positive test rate, but won’t affect the characteristics of the tests. Obviously I assume here that the test is carried out consistently by skilled people.</p>
+</div>
+<div id="a-simulation" class="section level2">
+<h2>A simulation</h2>
+<p>It’s difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used. ### The function to calculate FDR</p>
+<p>Based on the previous calculations, we can now make a function that calculates the true positives <span class="math inline">\(p\)</span> and false discovery rate <span class="math inline">\(FDR\)</span></p>
+<pre class="r"><code>calc_p &lt;- function(n, sp, se){
+        p &lt;- (n + sp - 1)/ (se + sp - 1)
+        # You can&#39;t have less positive cases than expected by
+        # the proportion of false positives when there&#39;s no
+        # infections!
+        p[n &lt; (1-sp)] &lt;- NA
+        p
+}
+calc_fdr &lt;- function(n, sp, se){
+        p &lt;- calc_p(n, sp, se)
+        np &lt;- 1 - p
+        np * (1 - sp) / (p*se + (np * (1 - sp)))
+}</code></pre>
+<p>Keep in mind that the positive test rate can never be smaller than <span class="math inline">\(1 - Sp\)</span>. If that were the case, you’d have fewer positive test results than the fraction false positives, and that is impossible. If there’s no positive cases and you expect 2% false positives, your positive rate has to be at least 2%.</p>
+<div id="false-discovery-rate-in-function-of-positive-results." class="section level3">
+<h3>False discovery rate in function of positive results.</h3>
+<p>As Belgium reported as few as 0.5% positive results in the testing procedure, we can assume that the specificity should be at least 99.5%. So let’s go with that. The relation between the false discovery rate and the fraction of positive results is then given below. Again, we assume that the tests are all carried out according to standard.</p>
+<p>The influence of the fraction of positive test results on the false discovery rate is shown below.</p>
+<pre class="r"><code># Make the data:
+theseq &lt;- seq(0.005,0.1, by = 0.001)
+pdata &lt;- tibble(
+        posrate = rep(theseq, 3),
+        specificity = rep(c(&quot;99.5%&quot;,&quot;99%&quot;,&quot;95%&quot;), 
+                          each = length(theseq) ),
+        fdr = c(calc_fdr(theseq, 0.995,0.8),
+                calc_fdr(theseq, 0.99, 0.8),
+                calc_fdr(theseq,0.97,0.8))
+) %&gt;% na.omit()
+ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
+        geom_line(lwd = 2) +
+        scale_x_continuous(labels = scales::percent) +
+        scale_y_continuous(labels = scales::percent) +
+        labs(x = &quot;Fraction positive results in the tests&quot;,
+             y = &quot;False Discovery Rate&quot;,
+             title = &quot;Effect fraction positive results on FDR&quot;) +
+        theme_bw() +
+        scale_color_viridis_d()</code></pre>
+<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
