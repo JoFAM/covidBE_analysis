@@ -14,3 +14,4 @@ navbar:
 output:
   html_document:
     theme: cosmo
+    css: myown.css

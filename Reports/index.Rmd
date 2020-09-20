@@ -2,4 +2,19 @@
 title: "Analyses related to COVID in Belgium"
 ---
 
-COVID causes hefty discussions on the internet. I try to bring some insight into the numbers and the 
+<p class = "lead">
+COVID causes hefty discussions on the internet. 
+<br>
+I try to bring some insight into what the numbers mean. And what they don't.
+</p>
+
+<div class="jumbotron">
+  <h2>A bit of algebra on false positives in tests</h2>
+  
+  <p><a href="FalseDiscoveryRate.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
+</div>
+
+
+If you find errors or like to know something more, please feel free to raise an issue on the issues page:
+
+https://github.com/JoFAM/covidBE_analysis/issues

@@ -9,10 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Joris Meys" />
 
 
-<title>Theory of false positives</title>
+<title>A bit of algebra on false positives in tests</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -21,6 +20,7 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -71,6 +71,7 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="myown.css" type="text/css" />
 
 
 
@@ -248,6 +249,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -305,50 +309,55 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Theory of false positives</h1>
-<h4 class="author">Joris Meys</h4>
-<h4 class="date">20/09/2020</h4>
+
+<h1 class="title toc-ignore">A bit of algebra on false positives in tests</h1>
 
 </div>
 
 
-<div id="flaws-in-diagnostic-tests" class="section level2">
-<h2>Flaws in diagnostic tests</h2>
 <p>Diagnostic tests aren’t perfect. They can give you a wrong result in two ways :</p>
 <ul>
 <li><strong>false positive</strong> : you test positive while you’re not.</li>
 <li><strong>false negative</strong> : you test negative while you’re infected.</li>
 </ul>
-<p>As a false negative is far more worrisome than a false positive, diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive. The <em>specificity</em> (i.e. the fraction of true negatives over all negatives) becomes smaller with increased sensitivity.</p>
-</div>
+<p>As a false negative is far more worrisome than a false positive, and hence diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive.</p>
 <div id="false-positives-in-your-test-population." class="section level2">
 <h2>False positives in your test population.</h2>
 <p>The relative number of false positives depends on a number of factors :</p>
 <ul>
-<li><em>sensitivity Se</em> : the proportion of infections detected by the test.</li>
-<li><em>specificity Sp</em> : the proportion of healthy people detected by the test. So the false positivity rate is <span class="math inline">\(1 - Sp\)</span>.</li>
-<li><em>prevalence P</em> : the true proportion of infections in the tested population.</li>
+<li><strong>Sensitivity</strong> <em>Se</em> : the proportion of infections detected by the test.</li>
+<li><strong>Specificity</strong> <em>Sp</em> : the proportion of healthy people with a negative test result.</li>
+<li><strong>prevalence</strong> <em>P</em> : the true proportion of infections in the tested population.</li>
 </ul>
-<p>The proportion of true positives is calculated as <span class="math inline">\(P \times Sp\)</span>, i.e. the proportion of real positives times the “detection rate” or specificity. Likewise, false positives over the entire test population can be calculated as <span class="math inline">\((1 - P) \times (1 - Sp)\)</span>. <span class="math inline">\((1 - P)\)</span> is here the proportion of true negatives, and a proportion of <span class="math inline">\((1 - Sp)\)</span> of those will test positive even though they’re not ill.</p>
-<p>This can be combined in an easy equation that gives you the <strong>false discovery rate</strong> <span class="math inline">\(FDR\)</span>, or the proportion of false positives over all positive test results. This looks as follows:</p>
+<p>The proportion of true positives in your test results is calculated as <span class="math inline">\(P \times Se\)</span>, i.e. the proportion of real positives times the “detection rate” or sensitivity. Likewise, false positives over the entire test population can be calculated as <span class="math inline">\((1 - P) \times (1 - Sp)\)</span>. <span class="math inline">\((1 - P)\)</span> is here the proportion of true negatives, and a proportion of <span class="math inline">\((1 - Sp)\)</span> of those will test positive even though they’re not ill.</p>
+<p>With the number of true and false positives, you can calculate the <strong>false discovery rate</strong> <span class="math inline">\(FDR\)</span>, or the proportion of false positives over all positive test results. This looks as follows:</p>
 <p><span class="math display">\[
 FDR = \displaystyle\frac{(1 - P) \times (1 - Sp)}{(P \times Se ) + (( 1 - P) \times (1 - Sp))}
 \]</span></p>
-<p>You calculate the fraction of false positives on all positive results if you know how sensitive and specific your test is, and how much people are really infected. But we don’t know that, we only know the proportion of positive tests <span class="math inline">\(N\)</span>. This is the sum of true and false positives:</p>
+<p>In order to do so, you need to know how sensitive and specific your test is, and how much people are really infected. But we don’t know the latter, we can only see the proportion of positive tests <span class="math inline">\(N\)</span>. This is the sum of true and false positives:</p>
 <p><span class="math display">\[
 N = (P \times Se) + ((1 - P) \times (1 - Sp))
 \]</span></p>
-<p>This makes :</p>
+<p>If you know the sensitivity and specificity of your test, you can rewrite the previous equation and use it to estimate the prevalence <span class="math inline">\(P\)</span> from the proportion of positive tests <span class="math inline">\(N\)</span> :</p>
 <p><span class="math display">\[
 P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
 \]</span></p>
-<p>Now we can use these calculations to get an indication of the false discovery rate <span class="math inline">\(FDR\)</span> given a certain sensitivity, specificity and positive test rate. The positive test rate is observed, sensitivity and specificity are characteristics from the test used. Differences in testing strategy will impact the positive test rate, but won’t affect the characteristics of the tests. Obviously I assume here that the test is carried out consistently by skilled people.</p>
+<p>Note that differences in testing strategy might impact the positive test rate <span class="math inline">\(N\)</span>, but they won’t affect the characteristics of the tests. So the relations here don’t change, regardless of the testing strategy.</p>
+<p>(Obviously I assume here that the test is carried out consistently by skilled people, so sensitivity and specificity are fairly constant. But let’s assume lab technicians do know their job.)</p>
 </div>
 <div id="a-simulation" class="section level2">
 <h2>A simulation</h2>
-<p>It’s difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used. ### The function to calculate FDR</p>
+<p>It’s difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used.</p>
+<p>Keep in mind it is impossible to have a false positive rate that’s larger than the proportion of positive tests. You can’t claim that 2% of your negative population tests positive if you only have 0.5% positive tests over the total of tests. Even without any infection, you still expect 2% positive tests if the specificity is only 98%.</p>
 <p>Based on the previous calculations, we can now make a function that calculates the true positives <span class="math inline">\(p\)</span> and false discovery rate <span class="math inline">\(FDR\)</span></p>
 <pre class="r"><code>calc_p &lt;- function(n, sp, se){
         p &lt;- (n + sp - 1)/ (se + sp - 1)
@@ -363,10 +372,8 @@ calc_fdr &lt;- function(n, sp, se){
         np &lt;- 1 - p
         np * (1 - sp) / (p*se + (np * (1 - sp)))
 }</code></pre>
-<p>Keep in mind that the positive test rate can never be smaller than <span class="math inline">\(1 - Sp\)</span>. If that were the case, you’d have fewer positive test results than the fraction false positives, and that is impossible. If there’s no positive cases and you expect 2% false positives, your positive rate has to be at least 2%.</p>
 <div id="false-discovery-rate-in-function-of-positive-results." class="section level3">
 <h3>False discovery rate in function of positive results.</h3>
-<p>As Belgium reported as few as 0.5% positive results in the testing procedure, we can assume that the specificity should be at least 99.5%. So let’s go with that. The relation between the false discovery rate and the fraction of positive results is then given below. Again, we assume that the tests are all carried out according to standard.</p>
 <p>The influence of the fraction of positive test results on the false discovery rate is shown below.</p>
 <pre class="r"><code># Make the data:
 theseq &lt;- seq(0.005,0.1, by = 0.001)
@@ -387,7 +394,62 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
              title = &quot;Effect fraction positive results on FDR&quot;) +
         theme_bw() +
         scale_color_viridis_d()</code></pre>
-<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>This illustrates clearly that when the number of positive test results go up, the proportion of false positives goes down. Again, this is due to the properties of the test, and has nothing to do with the testing strategy. The testing strategy will have an impact on the fraction of positive test results, but the larger this fraction is, the lower the FDR all other things being equal.</p>
+<p>As Belgium reported positive rates as low as 0.5%, the specificity is likely closer to 99.5%. So the proportion of false positives in the test results drops pretty fast when the fraction of positive results becomes larger.</p>
+</div>
+<div id="calculating-the-number-of-true-positives." class="section level3">
+<h3>Calculating the number of true positives.</h3>
+<p>In the end, the only thing we care about, is the fraction of true positives, or people that are really infected. And as explained above, we can again calculate this based on sensitivity, specificity and the observed fraction of positive test. The results for different sensitivities are given below:</p>
+<pre class="r"><code>pdata &lt;- tibble(
+        posrate = rep(theseq, 3),
+        sensitivity = rep(c(&quot;90%&quot;,&quot;80%&quot;,&quot;60%&quot;), 
+                          each = length(theseq) ),
+        fdr = c(calc_p(theseq, 0.995,0.9),
+                calc_p(theseq, 0.995, 0.8),
+                calc_p(theseq,0.995,0.6)),
+        specificity = &quot;99.5%&quot;
+) %&gt;% rbind(
+    tibble(
+        posrate = rep(theseq, 3),
+        sensitivity = rep(c(&quot;90%&quot;,&quot;80%&quot;,&quot;60%&quot;), 
+                          each = length(theseq) ),
+        fdr = c(calc_p(theseq, 0.98,0.9),
+                calc_p(theseq, 0.98, 0.8),
+                calc_p(theseq,0.98,0.6)),
+        specificity = &quot;98%&quot;
+        )
+    ) %&gt;% na.omit()
+
+ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
+        geom_path(lwd = 2, lineend = &quot;round&quot;) +
+        geom_segment(x = 0, xend = 0.05, y = 0.05, yend = 0.05,
+                     col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
+        geom_segment(x = 0.05, xend = 0.05, y = 0, yend = 0.05,
+                     col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
+        geom_segment(x = 0, xend = 0.075, y = 0.075, yend = 0.075,
+                     col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
+        geom_segment(x = 0.075, xend = 0.075, y = 0, yend = 0.075,
+                     col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
+        scale_x_continuous(labels = scales::percent) +
+        scale_y_continuous(labels = scales::percent) +
+        labs(x = &quot;Fraction positive results in the tests&quot;,
+             y = &quot;Real fraction of infections&quot;,
+             title = &quot;True infections in relation to sensitivity&quot;) +
+        theme_bw() +
+        scale_color_viridis_d() +
+        facet_wrap(vars(specificity),
+                   labeller = as_labeller(
+                           c(&quot;98%&quot; = &quot;Specificity: 98%&quot;,
+                             &quot;99.5%&quot; = &quot;Specificity: 99.5%&quot;)))</code></pre>
+<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>This is where it becomes really interesting. When the fraction of positive test results goes up, at one point the real fraction of infections becomes actually larger than the positive tests. This also makes sense: when your infected population grows, the number of false negatives grows. So when enough people are infected, you’ll miss more infections than you have false positives.</p>
+<p>So when someone points towards “false positives” to doubt a certain trend, now you know that :</p>
+<ul>
+<li>the proportion false positives goes down when the positive rate in your test population rises.</li>
+<li>if the positive rate climbs too much, the real infection rate becomes actually higher than observed in the test results.</li>
+</ul>
+<p><strong>disclaimer:</strong> Actually these numbers aren’t fixed, but random variables with distributions attached to i. Taking that into account will also allow you to calculate the uncertainties, but that’s a story for another day.</p>
 </div>
 </div>
 
@@ -424,6 +486,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

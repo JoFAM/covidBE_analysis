@@ -1,58 +1,61 @@
 ---
-title: "Theory of false positives"
-author: "Joris Meys"
-date: "20/09/2020"
-output: html_document
+title: "A bit of algebra on false positives in tests"
+output: 
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+library(dplyr)
+library(patchwork)
 ```
-
-## Flaws in diagnostic tests
 
 Diagnostic tests aren't perfect. They can give you a wrong result in two ways :
 
  - **false positive** : you test positive while you're not.
  - **false negative** : you test negative while you're infected.
  
-As a false negative is far more worrisome than a false positive, diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive. The *specificity* (i.e. the fraction of true negatives over all negatives) becomes smaller with increased sensitivity.
+As a false negative is far more worrisome than a false positive, and hence diagnostic tests are often very sensitive. The drawback here is that a higher sensitivity also increases the probability of a false positive. 
 
 ## False positives in your test population.
 
 The relative number of false positives depends on a number of factors :
 
- - *sensitivity Se* : the proportion of infections detected by the test.
- - *specificity Sp* : the proportion of healthy people detected by the test. So the false positivity rate is $1 - Sp$.
- - *prevalence P* : the true proportion of infections in the tested population.
+ - **Sensitivity** *Se* : the proportion of infections detected by the test.
+ - **Specificity** *Sp* : the proportion of healthy people with a negative test result.
+ - **prevalence** *P* : the true proportion of infections in the tested population.
  
-The proportion of true positives is calculated as $P \times Sp$, i.e. the proportion of real positives times the "detection rate" or specificity. Likewise, false positives over the entire test population can be calculated as $(1 - P) \times (1 - Sp)$. $(1 - P)$ is here the proportion of true negatives, and a proportion of $(1 - Sp)$ of those will test positive even though they're not ill.
+The proportion of true positives in your test results is calculated as $P \times Se$, i.e. the proportion of real positives times the "detection rate" or sensitivity. Likewise, false positives over the entire test population can be calculated as $(1 - P) \times (1 - Sp)$. $(1 - P)$ is here the proportion of true negatives, and a proportion of $(1 - Sp)$ of those will test positive even though they're not ill.
 
-This can be combined in an easy equation that gives you the **false discovery rate** $FDR$, or the proportion of false positives over all positive test results. This looks as follows:
+With the number of true and false positives, you can calculate the **false discovery rate** $FDR$, or the proportion of false positives over all positive test results. This looks as follows:
 
 $$
 FDR = \displaystyle\frac{(1 - P) \times (1 - Sp)}{(P \times Se ) + (( 1 - P) \times (1 - Sp))}
 $$
 
-You calculate the fraction of false positives on all positive results if you know how sensitive and specific your test is, and how much people are really infected. But we don't know that, we only know the proportion of positive tests $N$. This is the sum of true and false positives:
+In order to do so, you need to know how sensitive and specific your test is, and how much people are really infected. But we don't know the latter, we can only see the proportion of positive tests $N$. This is the sum of true and false positives:
 
 $$
 N = (P \times Se) + ((1 - P) \times (1 - Sp))
 $$
 
-This makes :
+If you know the sensitivity and specificity of your test, you can rewrite the previous equation and use it to estimate the prevalence $P$ from the proportion of positive tests $N$ :
 
 $$
 P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
 $$
 
-Now we can use these calculations to get an indication of the false discovery rate $FDR$ given a certain sensitivity, specificity and positive test rate. The positive test rate is observed, sensitivity and specificity are characteristics from the test used. Differences in testing strategy will impact the positive test rate, but won't affect the characteristics of the tests. Obviously I assume here that the test is carried out consistently by skilled people.
+Note that differences in testing strategy might impact the positive test rate $N$, but they won't affect the characteristics of the tests. So the relations here don't change, regardless of the testing strategy.
+
+(Obviously I assume here that the test is carried out consistently by skilled people, so sensitivity and specificity are fairly constant. But let's assume lab technicians do know their job.)
 
 ## A simulation
 
-It's difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used. 
-### The function to calculate FDR
+It's difficult to get accurate numbers on PCR tests for COVID, but PCR is in general a highly specific and rather sensitive method. Specificity reports range from 97% to 100%, and sensitivity from 66% to 95% depending on the criteria and exact flavor of PCR used.
+
+Keep in mind it is impossible to have a false positive rate that's larger than the proportion of positive tests. You can't claim that 2% of your negative population tests positive if you only have 0.5% positive tests over the total of tests. Even without any infection, you still expect 2% positive tests if the specificity is only 98%.
 
 Based on the previous calculations, we can now make a function that calculates the true positives $p$ and false discovery rate $FDR$ 
 ```{r}
@@ -71,15 +74,12 @@ calc_fdr <- function(n, sp, se){
 }
 ```
 
-Keep in mind that the positive test rate can never be smaller than $1 - Sp$. If that were the case, you'd have fewer positive test results than the fraction false positives, and that is impossible. If there's no positive cases and you expect 2% false positives, your positive rate has to be at least 2%.
 
 ### False discovery rate in function of positive results.
 
-As Belgium reported as few as 0.5% positive results in the testing procedure, we can assume that the specificity should be at least 99.5%. So let's go with that. The relation between the false discovery rate and the fraction of positive results is then given below. Again, we assume that the tests are all carried out according to standard.
-
 The influence of the fraction of positive test results on the false discovery rate is shown below.
 
-```{r}
+```{r,fig.align='center',out.width='60%',fig.width=5,fig.height=3}
 # Make the data:
 theseq <- seq(0.005,0.1, by = 0.001)
 pdata <- tibble(
@@ -100,3 +100,65 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
         theme_bw() +
         scale_color_viridis_d()
 ```
+
+This illustrates clearly that when the number of positive test results go up, the proportion of false positives goes down. Again, this is due to the properties of the test, and has nothing to do with the testing strategy. The testing strategy will have an impact on the fraction of positive test results, but the larger this fraction is, the lower the FDR all other things being equal.
+
+As Belgium reported positive rates as low as 0.5%, the specificity is likely closer to 99.5%. So the proportion of false positives in the test results drops pretty fast when the fraction of positive results becomes larger.
+
+### Calculating the number of true positives.
+
+In the end, the only thing we care about, is the fraction of true positives, or people that are really infected. And as explained above, we can again calculate this based on sensitivity, specificity and the observed fraction of positive test. The results for different sensitivities are given below:
+
+```{r,fig.align='center',out.width='100%',fig.width=8,fig.height=3}
+pdata <- tibble(
+        posrate = rep(theseq, 3),
+        sensitivity = rep(c("90%","80%","60%"), 
+                          each = length(theseq) ),
+        fdr = c(calc_p(theseq, 0.995,0.9),
+                calc_p(theseq, 0.995, 0.8),
+                calc_p(theseq,0.995,0.6)),
+        specificity = "99.5%"
+) %>% rbind(
+    tibble(
+        posrate = rep(theseq, 3),
+        sensitivity = rep(c("90%","80%","60%"), 
+                          each = length(theseq) ),
+        fdr = c(calc_p(theseq, 0.98,0.9),
+                calc_p(theseq, 0.98, 0.8),
+                calc_p(theseq,0.98,0.6)),
+        specificity = "98%"
+        )
+    ) %>% na.omit()
+
+ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
+        geom_path(lwd = 2, lineend = "round") +
+        geom_segment(x = 0, xend = 0.05, y = 0.05, yend = 0.05,
+                     col = "red", linetype = "dashed") +
+        geom_segment(x = 0.05, xend = 0.05, y = 0, yend = 0.05,
+                     col = "red", linetype = "dashed") +
+        geom_segment(x = 0, xend = 0.075, y = 0.075, yend = 0.075,
+                     col = "red", linetype = "dashed") +
+        geom_segment(x = 0.075, xend = 0.075, y = 0, yend = 0.075,
+                     col = "red", linetype = "dashed") +
+        scale_x_continuous(labels = scales::percent) +
+        scale_y_continuous(labels = scales::percent) +
+        labs(x = "Fraction positive results in the tests",
+             y = "Real fraction of infections",
+             title = "True infections in relation to sensitivity") +
+        theme_bw() +
+        scale_color_viridis_d() +
+        facet_wrap(vars(specificity),
+                   labeller = as_labeller(
+                           c("98%" = "Specificity: 98%",
+                             "99.5%" = "Specificity: 99.5%")))
+
+```
+
+This is where it becomes really interesting. When the fraction of positive test results goes up, at one point the real fraction of infections becomes actually larger than the positive tests. This also makes sense: when your infected population grows, the number of false negatives grows. So when enough people are infected, you'll miss more infections than you have false positives.
+
+So when someone points towards "false positives" to doubt a certain trend, now you know that :
+
+ - the proportion false positives goes down when the positive rate in your test population rises.
+ - if the positive rate climbs too much, the real infection rate becomes actually higher than observed in the test results.
+ 
+**disclaimer:** Actually these numbers aren't fixed, but random variables with distributions attached to i. Taking that into account will also allow you to calculate the uncertainties, but that's a story for another day.
