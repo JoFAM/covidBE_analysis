@@ -68,4 +68,7 @@ anim_save("testVsCases.gif",
           anim,
           path = "Data",
           nframes = nrow(pdata) + 20,
-          fps = 5, end_pause = 20)
+          fps = 5, end_pause = 20,
+          width = 900,
+          height = 900,
+          res = 150)
