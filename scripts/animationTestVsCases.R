@@ -1,9 +1,11 @@
 # Create plot on tests and cases
+library(ggplot2)
 library(viridis)
 library(gganimate)
+library(dplyr)
 # For this, you need 
 # source("scripts/downloadData.R")
-regionalsmooth <- readRDS("Data/regionalsmooth.RDS")
+regionalsmooth <- readRDS("Processed/regionalsmooth.RDS")
 # Make plot data
 pdata <- filter(regionalsmooth, REGION == "Belgium",
                 as.Date(DATE) > "2020-05-01",
@@ -56,7 +58,7 @@ p <- ggplot(pdata, aes(x=CASES, y = TESTS_ALL)) +
   labs(caption = "Data from https://epistat.wiv-isp.be/covid/")
 
 anim <- p + transition_reveal(DATE) +
-  labs(title = "Date: {pdata$DATE[round(frame)]} - positivity rate: {pdata$posrate[round(frame)]} % ")
+  labs(title = "Date: {pdata$DATE[round(frame)]} - positivity rate: {sprintf('%1.1f', pdata$posrate[round(frame)]) } % - data for Belgium")
 
 animate(anim, nframes = nrow(pdata) + 20,
         fps = 5, end_pause = 20)
