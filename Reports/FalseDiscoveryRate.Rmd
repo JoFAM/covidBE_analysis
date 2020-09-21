@@ -17,7 +17,7 @@ Diagnostic tests aren't perfect. They can give you a wrong result in two ways :
  - **false positive** : you test positive while you're not.
  - **false negative** : you test negative while you're infected.
  
-As a false negative is far more worrisome than a false positive, and hence diagnostic tests are often very sensitive. You rather raise a false alarm than miss an infection. But a higher sensitivity also increases the probability of a false positive, and those are said to inflate the numbers. But is that really true? Let's take a look at the (very) basic theory behind test performance. 
+A false negative is far more worrisome than a false positive, you rather raise a false alarm than miss an infection. So most diagnostic tests are very sensitive in order to pick up as many infections as possible. A higher sensitivity also increases the probability of a false positive, and those are said to inflate the numbers. But is that really true? Let's take a look at the (very) basic theory behind test performance. 
 
 ## False positives in your test population.
 
@@ -27,13 +27,13 @@ The relative number of false positives is called the False Discovery Rate or FDR
  - **Specificity** (here noted *Sp*) : this is the proportion of healthy people with a negative test result. So a high specificity means that you have only few false positives.
  - **prevalence** *P* : the true proportion of infections in the tested population. This is what you ultimately want to know.
  
-Diagnostic tests all have a certain sensitivity and specificity. These are properties of the test itself (assuming they're carried out correctly and consistently), so they aren't influenced by who you test or how many infections there really are in your population.
+Diagnostic tests all have a certain sensitivity and specificity. These are properties of the test itself (assuming they're carried out correctly and consistently), so they aren't influenced by who you test or how many infections there really are in your population. Using these properties, we can take a look at how false positives and also false negatives influence our test results.
 
 ## The False Discovery Rate
 
-The false discovery rate or $FDR$ is simply the proportion of false positives on the total of your positive test results. This number is influenced by both the sensitivity and specificity, so we need to know how exactly.
+The false discovery rate or $FDR$ is simply the proportion of false positives on the total of your positive test results. You can estimate this rate if you know the sensitivity and specificity of this test. 
 
-Let's assume for a moment we know the prevalence. Then the proportion of true positives in your test results is calculated as $P \times Se$, i.e. the proportion of real positives times the "detection rate" or sensitivity. Likewise, false positives over the entire test population can be calculated as $(1 - P) \times (1 - Sp)$. Here is $(1 - P)$ is the proportion of true negatives, and from that group a proportion of $(1 - Sp)$ will test positive even though they're not ill. 
+Let's assume for a moment we know the prevalence. Then the proportion of true positives in your test results is calculated as $P \times Se$, i.e. the proportion of real positives times the "detection rate" or sensitivity. Likewise, false positives over the entire test population can be calculated as $(1 - P) \times (1 - Sp)$. Here is $(1 - P)$ the proportion of true negatives, and from that group a proportion of $(1 - Sp)$ will test positive even though they're not ill. 
 
 The total proportion of positive tests (here called $N$) is merely the sum of both true and false positives. You can write this down as follows:
 
@@ -41,13 +41,13 @@ $$
 N = (P \times Se) + ((1 - P) \times (1 - Sp))
 $$
 
-With this information, you can write down a formula to estimate the false discovery rate $FDR$. Remember, this is nothing else but the proportion of false positives on the total of positive tests :
+Using this notation, the formula to estimate the false discovery rate $FDR$ becomes the following. Remember, this is nothing else but the proportion of false positives on the total of positive tests.
 
 $$
 FDR = \displaystyle\frac{(1 - P) \times (1 - Sp)}{N}
 $$
 
-To really know the FDR, you need to know how sensitive and specific your test is, and also how much people are really infected. But we don't know the latter, we can only see the proportion of positive tests $N$. Luckily you can rewrite the equation for $N$ above in such a way that you can use the specificity, sensitivity and proportion of positive tests to estimate the prevalence:
+To really know the FDR, you don't only need to know how sensitive and specific your test is. For this formula you also need an idea about how much people are really infected. But we don't know the latter, we can only see the proportion of positive tests $N$. Luckily you can rewrite the equation for $N$ above in such a way that you can use the specificity, sensitivity and proportion of positive tests to estimate the prevalence:
 
 $$
 P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
@@ -61,9 +61,9 @@ Note again that differences in testing strategy might impact the positive test r
 
 ### Sensitivity and specificity of PCR 
 
-It's crucial to know what the sensitivity and specificity are for your tests, but in the case of COVID this isn't very straightforward. PCR methods are in general very specific and rather sensitive. That's also the reason they're used so often for detection of viruses. In the literature you find numbers for specificity ranging from 97% to 100%, and for sensitivity from 66% to 95%. This depends partly on the criteria used for testing, and the exact flavor of the PCR procedure.
+PCR methods are in general very specific and rather sensitive. That's also the reason they're used so often for detection of viruses. In the literature you find numbers for specificity ranging from 97% to 100%, and for sensitivity from 66% to 95%. These depends partly on the criteria used while evaluating the PCR-test, and the exact flavor of the PCR procedure.
 
-Keep in mind it is impossible to have a false positive rate that's larger than the proportion of positive tests. You can't claim that 2% of your negative population tests positive if you only have 0.5% positive tests over the total of tests. Even if there are no infections, a specificity of 98% means that 2% of your healthy population will test positive regardless. As Belgium reported positive rates as low as 0.5%, it's not unreasonable to assume the specificity of the tests carried out here reaches a whopping 99.5%. We're good at this!
+Keep in mind it is impossible to have a false positive rate that's larger than the proportion of positive tests. You can't claim that 2% of your negative population tests positive if you only have 0.5% positive tests over the total of tests. Even if there are no infections, a specificity of 98% means that 2% of your healthy population will test positive regardless. As Belgium reported positive rates as low as 0.6%, it's not unreasonable to assume the specificity of the tests carried out here is at least a whopping 99.4%. We're good at this!
 
 ### A simulation 
 
@@ -166,7 +166,7 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
 
 ```
 
-This is where it becomes really interesting. When the fraction of positive test results goes up, at one point the real fraction of infections becomes actually larger than the positive tests. This also makes sense: when your infected population grows, the number of false negatives grows. So when enough people are infected, you'll miss more infections than you have false positives. That's where the sensitivity start to play an important role.
+This is where it becomes really interesting. When the fraction of positive test results goes up, at one point the real fraction of infections becomes actually larger than the positive tests. This also makes sense: when your infected population grows, the number of false negatives grows. So when enough people are infected, you'll miss more infections than you have false positives. So instead of counting too much infections, you're not counting enugh.
 
 <div class = "jumbotron">
 <p>So when someone points towards "false positives" to doubt a certain trend, now you know that :</p>
@@ -174,6 +174,7 @@ This is where it becomes really interesting. When the fraction of positive test 
 <ul>
  <li>the proportion false positives goes down when the positive rate in your test population rises.</li>
  <li>if the positive rate climbs too much, the real infection rate becomes actually higher than observed in the test results.</li>
+ <li> low positive test rates cause an overestimation of the number of infections, higher positive test rates cause an underestimation.</li>
 </div> 
  
 **disclaimer:** *These things are actually random variables. Using the correct statistical distributions will also allow you to calculate uncertainties on these numbers, but that's a story for another day.*
