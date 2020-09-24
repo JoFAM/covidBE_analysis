@@ -76,6 +76,8 @@ calc_p <- function(n, sp, se){
         # the proportion of false positives when there's no
         # infections!
         p[n < (1-sp)] <- NA
+        # get around floating point errors
+        p[round(n,4)== round(1-sp, 4)] <- 0
         p
 }
 calc_fdr <- function(n, sp, se){
@@ -96,7 +98,7 @@ The influence of the fraction of positive test results on the false discovery ra
 theseq <- seq(0.005,0.1, by = 0.001)
 pdata <- tibble(
         posrate = rep(theseq, 3),
-        specificity = rep(c("99.5%","99%","95%"), 
+        specificity = rep(c("99.5%","99%","97%"), 
                           each = length(theseq) ),
         fdr = c(calc_fdr(theseq, 0.995,0.8),
                 calc_fdr(theseq, 0.99, 0.8),
@@ -143,7 +145,6 @@ pdata <- tibble(
     ) %>% na.omit()
 
 ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
-        geom_path(lwd = 2, lineend = "round") +
         geom_segment(x = 0, xend = 0.05, y = 0.05, yend = 0.05,
                      col = "red", linetype = "dashed") +
         geom_segment(x = 0.05, xend = 0.05, y = 0, yend = 0.05,
@@ -152,6 +153,7 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
                      col = "red", linetype = "dashed") +
         geom_segment(x = 0.075, xend = 0.075, y = 0, yend = 0.075,
                      col = "red", linetype = "dashed") +
+        geom_path(lwd = 2, lineend = "round") +
         scale_x_continuous(labels = scales::percent) +
         scale_y_continuous(labels = scales::percent) +
         labs(x = "Fraction positive results in the tests",

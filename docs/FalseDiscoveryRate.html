@@ -375,6 +375,8 @@ P = \displaystyle\frac{N + Sp - 1}{Se + Sp - 1}
         # the proportion of false positives when there&#39;s no
         # infections!
         p[n &lt; (1-sp)] &lt;- NA
+        # get around floating point errors
+        p[round(n,4)== round(1-sp, 4)] &lt;- 0
         p
 }
 calc_fdr &lt;- function(n, sp, se){
@@ -391,7 +393,7 @@ calc_fdr &lt;- function(n, sp, se){
 theseq &lt;- seq(0.005,0.1, by = 0.001)
 pdata &lt;- tibble(
         posrate = rep(theseq, 3),
-        specificity = rep(c(&quot;99.5%&quot;,&quot;99%&quot;,&quot;95%&quot;), 
+        specificity = rep(c(&quot;99.5%&quot;,&quot;99%&quot;,&quot;97%&quot;), 
                           each = length(theseq) ),
         fdr = c(calc_fdr(theseq, 0.995,0.8),
                 calc_fdr(theseq, 0.99, 0.8),
@@ -434,7 +436,6 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
     ) %&gt;% na.omit()
 
 ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
-        geom_path(lwd = 2, lineend = &quot;round&quot;) +
         geom_segment(x = 0, xend = 0.05, y = 0.05, yend = 0.05,
                      col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
         geom_segment(x = 0.05, xend = 0.05, y = 0, yend = 0.05,
@@ -443,6 +444,7 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
                      col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
         geom_segment(x = 0.075, xend = 0.075, y = 0, yend = 0.075,
                      col = &quot;red&quot;, linetype = &quot;dashed&quot;) +
+        geom_path(lwd = 2, lineend = &quot;round&quot;) +
         scale_x_continuous(labels = scales::percent) +
         scale_y_continuous(labels = scales::percent) +
         labs(x = &quot;Fraction positive results in the tests&quot;,
