@@ -4,10 +4,10 @@
 #----------------------------------------------------
 
 # Check whether all packages are available and load them.
-source("checkPackages.R")
+source("scripts/checkPackages.R")
 
 # Load the processed data
-source("loadProcessedData.R")
+source("scripts/loadProcessedData.R")
 
 # Load the necessary modules
 

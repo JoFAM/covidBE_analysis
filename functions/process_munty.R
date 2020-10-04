@@ -5,10 +5,13 @@ source("functions/namesfunctions.R")
 process_munty <- function(x, date){
   x <- na.omit(x, date)
   
-  region <- translate_regions(x$TX_RGN_DESCR_NL)
-  prov <- translate_provinces(x$TX_PROV_DESCR_NL,
+  region <- if(!is.null(x$REGION)) {x$REGION}  else {
+    translate_regions(x$TX_RGN_DESCR_NL)}
+  prov <- if(!is.null(x$PROVINCE)) {x$PROVINCE} else {
+    translate_provinces(x$TX_PROV_DESCR_NL,
                               x$TX_PROV_DESCR_FR,
                               region)
+  }
   dstr <- translate_districts(x$TX_ADM_DSTR_DESCR_NL,
                               x$TX_ADM_DSTR_DESCR_FR,
                               region)
@@ -23,6 +26,6 @@ process_munty <- function(x, date){
     names_prov = prov,
     names_rgn = region,
     cases = x$CASES,
-    DATE = date
+    DATE = as.character(date)
   )
 }

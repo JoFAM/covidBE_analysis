@@ -6,7 +6,8 @@ source("functions/add_totals.R")
 source("functions/namesfunctions.R")
 #--------------------------------------
 # Read in the raw datasets
-
+message("Start download data. This might take a minute.")
+message("Processing cases data.")
 ## For cases by province, region, gender and agegroup
 rawcases<- refresh("cases",
                    "COVID19BE_CASES_AGESEX.csv",
@@ -21,13 +22,14 @@ rawcases<- refresh("cases",
                    })
 
 ## For tests by province (and region)
+message("Processing test information.")
 rawtest <- refresh("tests",
                    "COVID19BE_tests.csv",
                    process = function(x){
                      mutate(x,
                             PROVINCE = add_unknown(PROVINCE),
                             REGION = add_region(PROVINCE)) %>%
-                     add_totals(values = "TESTS_ALL",
+                     add_totals(values = c("TESTS_ALL","TESTS_ALL_POS"),
                                 groups = c("PROVINCE","REGION"),
                                 along = "DATE",
                                 name = c("All","Belgium")) %>%
@@ -35,6 +37,7 @@ rawtest <- refresh("tests",
                    })
 
 ## For hospitalisations by province and region
+message("Processing hospitalisations.")
 rawhospit <- refresh("hospitalisations",
                      "COVID19BE_HOSP.csv",
                      process = function(x){
@@ -53,6 +56,7 @@ rawhospit <- refresh("hospitalisations",
                      })
 
 ## For deaths by region, sex and agegroup
+message("Processing deaths.")
 rawdeaths <- refresh("deaths",
                      "COVID19BE_MORT.csv",
                      process = function(x){
@@ -65,13 +69,10 @@ rawdeaths <- refresh("deaths",
                      })
 
 ## Numbers for each municipality
+message("Processing municipalities data")
 rawmunicipalities <- refresh("municipalities",
                              "COVID19BE_CASES_MUNI.csv") %>%
-  mutate(REGION = translate_regions(TX_RGN_DESCR_NL),
-         PROVINCE = translate_provinces(TX_PROV_DESCR_NL,
-                                        TX_PROV_DESCR_FR,
-                                        REGION),
-         DISTRICT = translate_districts(TX_ADM_DSTR_DESCR_NL,
+  mutate(DISTRICT = translate_districts(TX_ADM_DSTR_DESCR_NL,
                                         TX_ADM_DSTR_DESCR_NL,
                                         REGION),
          MUNTY = translate_munty(TX_DESCR_NL,
@@ -86,7 +87,7 @@ rawmunicipalities <- refresh("municipalities",
   
 saveRDS(rawmunicipalities,
         file = file.path("Processed",
-                         "binnedmunty.RDS"))
+                         stamp("binnedmunty",".RDS")))
 
 #--------------------------------------
 # Combine the raw datasets into a number of separate 
@@ -95,7 +96,7 @@ saveRDS(rawmunicipalities,
 if(!dir.exists("Processed")) dir.create("Processed")
 
 ## Combine cases, tests, hospitalisations and deaths by date and region
-
+message("Combining data sets and saving.")
 casetemp <- filter(rawcases, PROVINCE == "All" & SEX == "All" &
                      AGEGROUP == "All") %>%
   select(-c(SEX, PROVINCE, AGEGROUP))
@@ -122,6 +123,6 @@ regionalsmooth <- full_join(casetemp,
   as.data.frame()
 
 saveRDS(regionalsmooth, file = file.path("Processed",
-                                         "regionalsmooth.RDS"))
+                                         stamp("regionalsmooth",".RDS")))
+message("Succes!")
 
-# 
