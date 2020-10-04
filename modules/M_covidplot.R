@@ -8,6 +8,7 @@
 #
 # covidplotServer("myplot",
 #                 plot = theplot,
+#                 caption = labs(caption = "something", tag = "something else"),
 #                 filename = "defaultname.png")
 
 
@@ -23,7 +24,8 @@ covidplotUI <- function(id){
   )
 }
 
-covidplotServer <-function(id, theplot, filename = "plot.png"){
+covidplotServer <-function(id, theplot, filename = "plot.png",
+                           caption = NULL){
   moduleServer(
     id,
     function(input, output, session){
