@@ -22,19 +22,21 @@ slice <- tmp %>%
 # Legends in ggplot are a pain to do manually...
 slice <- mutate(slice,
                 filla = alpha("#455053",0.5),
-                fillb = "black")
+                fillb = "black",
+                smoothICU = ksmooth(DATE,TOTAL_IN_ICU,
+                                    kernel = "normal",
+                                    bandwidth = 7)$y,
+                smoothNEW = ksmooth(DATE,NEW_IN,
+                                    kernel = "normal",
+                                    bandwidth = 7)$y)
 
 # Plot :
 # - kernel smooth
 # - numbers are more or less eyeballed. 
 # - lag analysis showed a peak in ICU abt 10 days after admissions
-ggplot(slice, aes(x = DATE, y = ksmooth(DATE,TOTAL_IN_ICU,
-                                        kernel = "normal",
-                                        bandwidth = 7)$y )) +
+ggplot(slice, aes(x = DATE, y = smoothICU )) +
   geom_area(aes(fill = filla) ) + 
-  geom_area(mapping = aes(y = ksmooth(DATE,NEW_IN,
-                                      kernel = "normal",
-                                      bandwidth = 7)$y, fill = fillb)) +
+  geom_area(mapping = aes(y = smoothNEW, fill = fillb)) +
   theme_minimal() +
   labs(y = "Number of patients",
        fill = "Daily new\nhospitalisations",
@@ -72,8 +74,8 @@ ggplot(slice, aes(x = DATE, y = ksmooth(DATE,TOTAL_IN_ICU,
             color = "black") +
   geom_segment(x = as.Date("2020-03-01"),
                xend = as.Date("2020-08-21"),
-               y = 39,
-               yend = 39, col = "red", lty = 2) +
+               y = 74,
+               yend = 74, col = "red", lty = 2) +
   geom_segment(x = as.Date("2020-08-11"),
                xend = as.Date("2020-08-11"),
                y = 0,
@@ -89,7 +91,7 @@ ggplot(slice, aes(x = DATE, y = ksmooth(DATE,TOTAL_IN_ICU,
   annotate(geom = "text",
            x = as.Date("2020-08-15"),
            y = 200,
-           label = "+110% 10 days after\npeak in new hospitalisations",
+           label = "+14% 10 days after\npeak in new hospitalisations",
            color = "black") +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b %d")
