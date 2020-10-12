@@ -4,6 +4,8 @@ source("functions/refresh.R")
 source("functions/helperfunctions.R")
 source("functions/add_totals.R")
 source("functions/namesfunctions.R")
+
+if(!dir.exists("Processed")) dir.create("Processed")
 #--------------------------------------
 # Read in the raw datasets
 message("Start download data. This might take a minute.")
@@ -93,7 +95,7 @@ saveRDS(rawmunicipalities,
 # Combine the raw datasets into a number of separate 
 # datasets that can be used for analysis.
 # Smooth the data using a 7 day window where possible.
-if(!dir.exists("Processed")) dir.create("Processed")
+
 
 ## Combine cases, tests, hospitalisations and deaths by date and region
 message("Combining data sets and saving.")
