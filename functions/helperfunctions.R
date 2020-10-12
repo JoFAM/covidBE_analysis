@@ -84,3 +84,14 @@ bin_cases <- function(x, breaks = c(0,5,10,15,20,30,50,100,+Inf),
   x[idless] <- "<5"
   x
 }
+
+# Calculate the change
+changeabsolute <- function(x){
+  n <- length(x)
+  c(rep(NA,7), (x[8:n] - x[1:(n-7)]))
+}
+
+changepercent <- function(x){
+  n <- length(x)
+  c(rep(NA,7), (x[8:n] - x[1:(n-7)])/ x[1:(n-7)] * 100 )
+}

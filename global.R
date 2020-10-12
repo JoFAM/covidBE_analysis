@@ -10,5 +10,9 @@ source("scripts/checkPackages.R")
 source("scripts/loadProcessedData.R")
 
 # Load the necessary modules
+mfiles <- dir("modules")
+for(i in mfiles){
+  source(file.path("modules",i))
+}
 
 

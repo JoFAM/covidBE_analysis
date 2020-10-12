@@ -120,7 +120,28 @@ regionalsmooth <- full_join(casetemp,
   group_by(REGION) %>%
   mutate(across(where(is.numeric),
                 ~ zoo::rollmean(., 7, align = "right", fill = NA))) %>%
+  mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS,
+         CHANGE_CASES = changeabsolute(CASES),
+         CHANGE_TESTS = changeabsolute(TESTS_ALL),
+         CHANGE_POS = changeabsolute(TESTS_ALL_POS),
+         CHANGE_NEW_IN = changeabsolute(NEW_IN),
+         CHANGE_DEATHS = changeabsolute(DEATHS),
+         CHANGE_TOTAL_IN = changeabsolute(TOTAL_IN),
+         CHANGE_TOTAL_IN_ICU = changeabsolute(TOTAL_IN_ICU),
+         CHANGE_TOTAL_IN_RESP = changeabsolute(TOTAL_IN_RESP),
+         CHANGE_TOTAL_IN_ECMO = changeabsolute(TOTAL_IN_ECMO)) %>%
   as.data.frame()
+
+# Add relative changes
+# NEED AGEDIST FOR PROVINCES AS WELL !!!!
+# n <- read.csv("Data/AgedistPopBe.csv")
+# 
+# agecases <- rawcases %>%
+#   group_by(DATE, REGION, PROVINCE, AGEGROUP, SEX) %>%
+#   mutate(across(where(is.numeric),
+#                 ~ zoo::rollmean(., 7, align = "right", fill = NA)))
+
+
 
 saveRDS(regionalsmooth, file = file.path("Processed",
                                          stamp("regionalsmooth",".RDS")))
