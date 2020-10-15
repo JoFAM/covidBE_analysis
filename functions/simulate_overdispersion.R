@@ -1,7 +1,11 @@
 # Functions to model an epidemic using a negative binomial
 # distribution to take overdispersion into account.
 #---------------------------------------------------------
-
+library(tidygraph)
+library(tibble)
+library(ggraph)
+library(patchwork)
+library(scales)
 #----------------------------------------------------------
 #' Simulate total number of infections after n steps
 #' @param nsteps the number of steps in the infection chain
