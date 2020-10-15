@@ -1,0 +1,43 @@
+---
+title: "How differences in infectivity shape the COVID pandemic"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+```
+
+Recently, the atlantic published a very [insightful article](https://www.theatlantic.com/health/archive/2020/09/k-overlooked-variable-driving-pandemic/616548/) about an often ignored characteristic of the COVID pandemic. It turns out that the infectivity differs far more between people in this pandemic compared to for example the flu. There's quite a lot of people that don't transmit the virus at all, and a few that infect a lot of others. This phenomenon is called ''overdispersion''. 
+
+In the figure below I illustrate a ''typical'' transmission chain with 5 steps for a covid-style and a flu-style pandemic. Whereas the flu spreads in a more continuous way through a population, COVID infections happen more in bursts. And that has some important implications.
+
+```{r, fig.height=7, fig.width=8, out.width="100%"}
+source("https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_overdispersion.R")
+set.seed(913)
+covid <- simul_chain(k=0.2, R = 1.3,nsteps=5)
+flu <- simul_chain(k=5, R = 1.3, nsteps=5)
+
+(plot_chain(covid,
+           title = "model COVID") / 
+  plot_chain(flu,
+             title = "model FLU")) +
+  plot_layout(guides = "collect")
+```
+
+## Parameters describing an epidemic
+
+This simulation is done using what is called a ''negative binomial distribution''. It's a mathematical formula that describes how much chance there is to infect a certain number of other people, and it is defined by 2 parameters:
+
+ - **R** (or $\mu$) is the average number of people you infect once infected. You've probably heard about the reproduction number before, as it determines the speed of the epidemic in the long(er) run.
+ - **k** is the so-called dispersion parameter. The lower it is, the more spread there is between the numbers. This parameter is less known, and defines how erratic an epidemic can become.
+ 
+[Endo et al](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7338915/) have tried to put some reasonable numbers on **k**, and arrived at a number somewhere between 0.05 and 0.2 for an **R** value of 2. As we've taken measures already, in most of the simulations below I'll be a bit more optimistic and work with an **R** value of 1.3. For COVID I use a **k** value of 0.2, for flu I use one of 5. 
+ 
+```{r}
+
+```

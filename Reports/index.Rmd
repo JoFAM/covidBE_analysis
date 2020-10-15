@@ -9,6 +9,12 @@ I try to bring some insight into what the numbers mean. And what they don't.
 </p>
 
 <div class="jumbotron">
+  <h2>How differences in infectivity shape the COVID pandemic.</h2>
+  
+  <p><a href="Overdispersion.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
+</div>
+
+<div class="jumbotron">
   <h2>A bit of algebra on false positives in tests</h2>
   
   <p><a href="FalseDiscoveryRate.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>

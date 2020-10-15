@@ -11,6 +11,8 @@ navbar:
       menu: 
         - text: "False posivites"
           href: FalseDiscoveryRate.html
+        - text: "Overdispersion"
+          href: Overdispersion.html
 output:
   html_document:
     theme: cosmo
