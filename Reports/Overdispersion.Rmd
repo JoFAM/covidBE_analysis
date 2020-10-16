@@ -1,5 +1,5 @@
 ---
-title: "How differences in infectivity shape the COVID pandemic"
+title: "Differences in infectivity shape the COVID pandemic"
 output: 
   html_document:
     code_folding: hide
@@ -184,7 +184,7 @@ ggplot(pdata, aes(x=nstart,y=p, color = lim)) +
 
 <ul>
  <li>the COVID epidemic is largely driven by clusters, so controlling those is key.</li>
- <li>transmission chains can diminsish fast, but can explode fast as well. Much of that is coincidence.</li>
+ <li>transmission chains can diminish fast, but can explode fast as well. Much of that is chance.</li>
  <li>the longer you wait to crush the transmission chain, the harder it gets and the larger the impact.</li>
 </ul>
 

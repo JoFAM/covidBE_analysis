@@ -411,7 +411,7 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = specificity)) +
              title = &quot;Effect fraction positive results on FDR&quot;) +
         theme_bw() +
         scale_color_viridis_d()</code></pre>
-<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-47-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-2-1.png" width="60%" style="display: block; margin: auto;" /></p>
 <p>You see immediately that when the number of positive test results go up, the false discovery rate quickly drops. This makes sense: when more people are infected, you find more true positives. Even more, when infections rise you’ll find less false positives, as less people are healthy. This effect becomes stronger when the specificity of the test is higher.</p>
 <p>Again, this is solely an effect of key properties of the test, and has nothing to do with the testing strategy. The testing strategy will have an impact on the fraction of positive test results, but won’t change the nature of this relation.</p>
 </div>
@@ -459,7 +459,7 @@ ggplot(pdata, aes(x = posrate, y = fdr, color = sensitivity)) +
                    labeller = as_labeller(
                            c(&quot;98%&quot; = &quot;Specificity: 98%&quot;,
                              &quot;99.5%&quot; = &quot;Specificity: 99.5%&quot;)))</code></pre>
-<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-48-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="FalseDiscoveryRate_files/figure-html/unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>This is where it becomes really interesting. When the fraction of positive test results goes up, at one point the real fraction of infections becomes actually larger than the positive tests. This also makes sense: when your infected population grows, the number of false negatives grows. So when enough people are infected, you’ll miss more infections than you have false positives. So instead of counting too much infections, you’re not counting enugh.</p>
 <div class="jumbotron">
 <p>
