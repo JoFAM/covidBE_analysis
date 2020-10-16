@@ -43,14 +43,16 @@ dist_cases <- function(nsimul = 1000,
 #' @inheritParams dist_cases
 
 simul_prob_containment <- function(nstart = seq.int(50),
+                                   fold = 1,
                        ...){
+  nstart <- rep(nstart, fold)
   nout <- length(nstart)
   p <- numeric(nout)
   
   for(i in seq.int(nout)){
     tmp <- dist_cases(nstart = nstart[i],
                       ...)
-    p[i] <- mean(tmp == 0)
+      p[i] <- mean(tmp == 0)
   }
   tibble(nstart = nstart,
          p = p)
