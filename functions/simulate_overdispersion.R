@@ -15,11 +15,12 @@ library(tidyr)
 #' @param k the overdispersion parameter
 #' @param R the reproductive number (seen as mean of the neg binom dist)
 simul_cases <- function(nsteps = 5, nstart = 1,
-                        k = 0.1, R = 1.3){
+                        k = 0.1, R = 1.3, lim = NULL){
   n <- nstart
   i <- 1
   while(i <= nsteps){
-    n <- sum(rnbinom(n,size = k, mu = R))
+    sim <- rnbinom(n,size = k, mu = R)
+    n <- if(is.null(lim)) sum(sim) else sum(pmin(sim,lim))
     i <- i + 1
   }
   n
@@ -30,13 +31,10 @@ simul_cases <- function(nsteps = 5, nstart = 1,
 #' @param nsimul the number of simulations
 #' @inheritParams simul_cases
 dist_cases <- function(nsimul = 1000,
-                       nsteps = 5, nstart = 1,
-                       k = 0.1, R = 1.3){
+                       ...){
+  args <- list(...)
   replicate(nsimul,
-            simul_cases(nsteps = nsteps,
-                        nstart = nstart,
-                        k = k,
-                        R = R))
+            do.call(simul_cases,args))
 }
 
 #--------------------------------------------------
@@ -44,18 +42,14 @@ dist_cases <- function(nsimul = 1000,
 #' @param nstart a sequence of values for nstart (see simul_cases)
 #' @inheritParams dist_cases
 
-simul_prob <- function(nstart = seq.int(50),
-                       nsimul = 1000,
-                       nsteps = 5,
-                       k = 0.1, R = 1.3){
+simul_prob_containment <- function(nstart = seq.int(50),
+                       ...){
   nout <- length(nstart)
   p <- numeric(nout)
   
   for(i in seq.int(nout)){
-    tmp <- dist_cases(nsimul = nsimul,
-                      nsteps = nsteps,
-                      nstart = nstart[i],
-                      k = k, R = R)
+    tmp <- dist_cases(nstart = nstart[i],
+                      ...)
     p[i] <- mean(tmp == 0)
   }
   tibble(nstart = nstart,
