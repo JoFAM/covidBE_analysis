@@ -6,6 +6,8 @@ library(tibble)
 library(ggraph)
 library(patchwork)
 library(scales)
+library(dplyr)
+library(tidyr)
 #----------------------------------------------------------
 #' Simulate total number of infections after n steps
 #' @param nsteps the number of steps in the infection chain

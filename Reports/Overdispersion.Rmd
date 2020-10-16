@@ -17,6 +17,7 @@ Recently, the atlantic published a very [insightful article](https://www.theatla
 In the figure below I illustrate a ''typical'' transmission chain with 5 steps for a covid-style and a flu-style pandemic. Whereas the flu spreads in a more continuous way through a population, COVID infections happen more in bursts. And that has some important implications.
 
 ```{r, fig.height=7, fig.width=8, out.width="100%"}
+# This loads all the functions used for the simulations here.
 source("https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_overdispersion.R")
 set.seed(913)
 covid <- simul_chain(k=0.2, R = 1.3,nsteps=5)
@@ -36,8 +37,32 @@ This simulation is done using what is called a ''negative binomial distribution'
  - **R** (or $\mu$) is the average number of people you infect once infected. You've probably heard about the reproduction number before, as it determines the speed of the epidemic in the long(er) run.
  - **k** is the so-called dispersion parameter. The lower it is, the more spread there is between the numbers. This parameter is less known, and defines how erratic an epidemic can become.
  
-[Endo et al](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7338915/) have tried to put some reasonable numbers on **k**, and arrived at a number somewhere between 0.05 and 0.2 for an **R** value of 2. As we've taken measures already, in most of the simulations below I'll be a bit more optimistic and work with an **R** value of 1.3. For COVID I use a **k** value of 0.2, for flu I use one of 5. 
+[Endo et al (2020)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7338915/) have tried to put some reasonable numbers on **k**, and arrived at a number somewhere between 0.05 and 0.2 for an **R** value of 2. As we've taken measures already, in most of the simulations below I'll be a bit more optimistic and work with an **R** value of 1.3. For COVID I use a **k** value of 0.2 based on Endo et al(2020), for flu I use one of 5. With those choices, the probability of the number of secondary infections for both epidemic models look like the figure below.
  
-```{r}
+```{r, fig.height=4, fig.width=8, out.width="100%",warning=FALSE,message=FALSE}
+probs <- tibble(quant = 0:50,
+                Covid = dnbinom(quant,size = 0.2, mu = 1.3),
+                Flu = dnbinom(quant, size = 5, mu = 1.3)) %>%
+  pivot_longer(c(Covid, Flu),
+               names_to = "disease",
+               values_to = "prob") %>%
+  mutate(quant = cut(quant,
+                     breaks = c(0:6,Inf),
+                     labels = c(0:5,"> 5"),
+                     right = FALSE),
+         disease = recode(disease,
+                          Covid = "model COVID",
+                          Flu = "model FLU")) %>% 
+  group_by(quant, disease) %>%
+  summarise(prob = sum(prob))
+
+ggplot(probs, aes(x = quant, y = prob, fill = disease)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(vars(disease)) +
+  labs(x = "Number of secondary infections",
+       y = "",
+       title = "Probability of number of second infections") +
+  scale_y_continuous(labels = percent_format()) +
+  theme_minimal()
 
 ```
