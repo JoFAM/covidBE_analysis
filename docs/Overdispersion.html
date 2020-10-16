@@ -330,13 +330,8 @@ $(document).ready(function () {
 <p>Recently, the atlantic published a very <a href="https://www.theatlantic.com/health/archive/2020/09/k-overlooked-variable-driving-pandemic/616548/">insightful article</a> about an often ignored characteristic of the COVID pandemic. It turns out that the infectivity differs far more between people in this pandemic compared to for example the flu. There’s quite a lot of people that don’t transmit the virus at all, and a few that infect a lot of others. This phenomenon is called ‘’overdispersion’’.</p>
 <p>In the figure below I illustrate a ‘’typical’’ transmission chain with 5 steps for a covid-style and a flu-style pandemic. Whereas the flu spreads in a more continuous way through a population, COVID infections happen more in bursts. And that has some important implications.</p>
 <pre class="r"><code># This loads all the functions used for the simulations here.
-source(&quot;https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_overdispersion.R&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;tidygraph&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     filter</code></pre>
-<pre class="r"><code>set.seed(913)
+source(&quot;https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_overdispersion.R&quot;)
+set.seed(913)
 covid &lt;- simul_chain(k=0.2, R = 1.3,nsteps=5)
 flu &lt;- simul_chain(k=5, R = 1.3, nsteps=5)
 
@@ -484,7 +479,7 @@ ggplot(pdata, aes(x=nstart,y=p, color = lim)) +
 <p><img src="Overdispersion_files/figure-html/unnamed-chunk-4-1.png" width="100%" /></p>
 <div class="jumbotron">
 <p>
-So when someone claims about the economic impact of lockdowns, now you know that :
+So when someone complains about the economic impact of lockdowns, now you know that :
 </p>
 <ul>
 <li>

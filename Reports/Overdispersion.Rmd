@@ -5,7 +5,7 @@ output:
     code_folding: hide
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE,message=FALSE,warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
@@ -16,7 +16,7 @@ Recently, the atlantic published a very [insightful article](https://www.theatla
 
 In the figure below I illustrate a ''typical'' transmission chain with 5 steps for a covid-style and a flu-style pandemic. Whereas the flu spreads in a more continuous way through a population, COVID infections happen more in bursts. And that has some important implications.
 
-```{r, fig.height=7, fig.width=8, out.width="100%"}
+```{r, fig.height=7, fig.width=8, out.width="100%",message=FALSE,warning=FALSE}
 # This loads all the functions used for the simulations here.
 source("https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_overdispersion.R")
 set.seed(913)
@@ -180,7 +180,7 @@ ggplot(pdata, aes(x=nstart,y=p, color = lim)) +
 ```
 
 <div class = "jumbotron">
-<p>So when someone claims about the economic impact of lockdowns, now you know that :</p>
+<p>So when someone complains about the economic impact of lockdowns, now you know that :</p>
 
 <ul>
  <li>the COVID epidemic is largely driven by clusters, so controlling those is key.</li>
