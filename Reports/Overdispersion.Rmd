@@ -73,7 +73,7 @@ It will not come as a surprise that with a low number of starting cases, a COVID
 
 Let's see what happens when we introduce a number of infections in a population. In the following simulation we look at the number of new infections after 5 steps in the infection chain. As secondary infection occurs on average 4-5 days after the patient is infected themselves, 5 steps is about 20-25 days later. In the plot below I simulated 1000 transmission chains and counted the number of infections in the last step of the transmission chain.
 
-```{r}
+```{r, fig.height=4, fig.width=8, out.width="100%"}
 sim <- c(
   dist_cases(k=0.2,R=1.3,nstart = 10),
   dist_cases(k=0.2,R=1.3,nstart = 100),
@@ -115,52 +115,83 @@ As Zeyne Tufekci wrote in his [article in the Atlantic](https://www.theatlantic.
 
 But the key here is to limit the number of infections in the community early on, as that gives you the best chance of eradicating the virus. In this next simulation, we look at the probability of the virus dying out within 10 transmission steps (40-50 days) depending on the number of initial infections.
 
-```{r,message=FALSE,warning=FALSE}
+```{r,message=FALSE,warning=FALSE, fig.height=4, fig.width=8, out.width="100%"}
 psim <- simul_prob_containment(
-  nstart = c(1,10,30,50,100,300,500,1000, 3000,5000,10000),
+  nstart = c(1,3,10,30,50,100,200,300,500,700,1000,2000, 3000,5000,7000,10000),
   nsimul = 100, fold = 10,
   nstep = 10,
   k = 0.2, R = 1.3
 )
 psimlim5 <- simul_prob_containment(
-  nstart = c(1,10,30,50,100,300,500,1000, 3000,5000,10000),
+  nstart = c(1,3,10,30,50,100,200,300,500,700,1000,2000, 3000,5000,7000,10000),
   nsimul = 100, fold = 10,
   nstep = 10,
-  k = 0.2, R = 1.3,
-  lim = 5
+  k = 0.2, R = 1
 )
 psimlim3 <- simul_prob_containment(
-  nstart = c(1,10,30,50,100,300,500,1000, 3000,5000,10000),
+  nstart = c(1,3,10,30,50,100,200,300,500,700,1000,2000, 3000,5000,7000,10000),
   nsimul = 100, fold = 10,
   nstep = 10,
-  k = 0.2, R = 1.3,
-  lim = 3
+  k = 0.2, R = 0.7
 )
 
 psimlim1 <- simul_prob_containment(
-  nstart = c(1,10,30,50,100,300,500,1000, 3000,5000,10000),
+  nstart = c(1,3,10,30,50,100,200,300,500,700,1000,2000, 3000,5000,7000,10000),
   nsimul = 100, fold = 10,
   nstep = 10,
-  k = 0.2, R = 1.3,
-  lim = 1
+  k = 0.2, R = 0.5
 )
 
-psim$lim <- "no limit"
-psimlim5$lim <- "max 5 missed"
-psimlim3$lim <- "max 3 missed"
-psimlim1$lim <- "max 1 missed"
+psimlim0 <- simul_prob_containment(
+  nstart = c(1,3,10,30,50,100,200,300,500,700,1000,2000, 3000,5000,7000,10000),
+  nsimul = 100, fold = 10,
+  nstep = 10,
+  k = 0.2, R = 0.3
+)
 
-pdata <- rbind(psim, psimlim3, psimlim5,psimlim1)
+
+psim$lim <- "No action (R = 1.3)"
+psimlim5$lim <- "A bit (R = 1)"
+psimlim3$lim <- "A lot (R = 0.7)"
+psimlim1$lim <- "A whole lot (R = 0.5)"
+psimlim0$lim <- "Much pain (R = 0.3)"
+
+pdata <- rbind(psim, psimlim3, psimlim5,psimlim1,psimlim0) %>%
+  mutate(lim = factor(lim,
+                      levels = c("No action (R = 1.3)",
+                                 "A bit (R = 1)",
+                                 "A lot (R = 0.7)",
+                                 "A whole lot (R = 0.5)",
+                                 "Much pain (R = 0.3)")))
 
 ggplot(pdata, aes(x=nstart,y=p, color = lim)) + 
   geom_smooth(method = "gam", 
               formula = y ~ s(x, bs = "ad",k=20),
-              se = FALSE) + 
+              se = FALSE,
+              lwd = 2) + 
   scale_x_log10() +
   scale_y_continuous(labels = label_percent()) +
-  labs(x = "Initial infections",
-       y = "probability containment",
-       title = "Containment after 10 transmission steps") +
+  labs(x = "Initial infections (log scale)",
+       y = "probability of containment",
+       title = "Containment after 10 transmission steps",
+       color = "Action taken") +
   theme_minimal()
 
 ```
+
+<div class = "jumbotron">
+<p>So when someone claims about the economic impact of lockdowns, now you know that :</p>
+
+<ul>
+ <li>the COVID epidemic is largely driven by clusters, so controlling those is key.</li>
+ <li>transmission chains can diminsish fast, but can explode fast as well. Much of that is coincidence.</li>
+ <li>the longer you wait to crush the transmission chain, the harder it gets and the larger the impact.</li>
+</ul>
+
+<p>Ask New Zealand. Or Japan. South Korea, Taiwan, Singapore, ...</p>
+</div> 
+ 
+
+**disclaimer:** *You shouldn't see the number of initial infections as the number of infections in a country, but in a connected community of significant larger size than the number of initial infections. And as no community is totally isolated, real life is a bit more complex.*
+
+

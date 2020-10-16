@@ -177,6 +177,7 @@ This is where it becomes really interesting. When the fraction of positive test 
  <li>the proportion false positives goes down when the positive rate in your test population rises.</li>
  <li>if the positive rate climbs too much, the real infection rate becomes actually higher than observed in the test results.</li>
  <li> low positive test rates cause an overestimation of the number of infections, higher positive test rates cause an underestimation.</li>
+</ul>
 </div> 
  
 **disclaimer:** *These things are actually random variables. Using the correct statistical distributions will also allow you to calculate uncertainties on these numbers, but that's a story for another day.*
