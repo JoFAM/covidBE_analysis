@@ -113,7 +113,9 @@ hosptemp <- filter(rawhospit, PROVINCE == "All") %>%
 deathtemp <- filter(rawdeaths, SEX == "All" & AGEGROUP == "All") %>%
   select(-c(SEX, AGEGROUP))
 
-regionalweekavg <- full_join(casetemp,
+# Make raw regional data with changes.
+
+regionalraw <- full_join(casetemp,
                           testtemp,
                           by = c("REGION","DATE")) %>%
   full_join(hosptemp, by = c("REGION","DATE")) %>%
@@ -121,18 +123,21 @@ regionalweekavg <- full_join(casetemp,
   filter(as.Date(DATE) >= as.Date("2020-03-15")) %>%
   mutate(across(where(is.numeric),replaceby0)) %>%
   group_by(REGION) %>%
+  mutate(across(c(CASES, TESTS_ALL, TESTS_ALL_POS,
+                     NEW_IN, DEATHS, TOTAL_IN, 
+                     TOTAL_IN_ICU, TOTAL_IN_RESP,
+                     TOTAL_IN_ECMO),
+                changeabsolute,
+                .names = "CHANGE_{.col}")) %>%
+  mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS) %>%
+  as.data.frame()
+
+# Changes can be averaged as they're absolute changes.
+regionalweekavg <- regionalraw %>%
+  group_by(REGION) %>%
   mutate(across(where(is.numeric),
                 ~ zoo::rollmean(., 7, align = "right", fill = NA)))  %>%
-  mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS,
-         CHANGE_CASES = changeabsolute(CASES),
-         CHANGE_TESTS = changeabsolute(TESTS_ALL),
-         CHANGE_POS = changeabsolute(TESTS_ALL_POS),
-         CHANGE_NEW_IN = changeabsolute(NEW_IN),
-         CHANGE_DEATHS = changeabsolute(DEATHS),
-         CHANGE_TOTAL_IN = changeabsolute(TOTAL_IN),
-         CHANGE_TOTAL_IN_ICU = changeabsolute(TOTAL_IN_ICU),
-         CHANGE_TOTAL_IN_RESP = changeabsolute(TOTAL_IN_RESP),
-         CHANGE_TOTAL_IN_ECMO = changeabsolute(TOTAL_IN_ECMO)) %>%
+  mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS) %>%
   as.data.frame()
 
 # Add relative changes
@@ -144,6 +149,10 @@ regionalweekavg <- full_join(casetemp,
 #   mutate(across(where(is.numeric),
 #                 ~ zoo::rollmean(., 7, align = "right", fill = NA)))
 
+replacefile(regionalraw,
+            "regionalraw",
+            "rds",
+            "Processed")
 
 replacefile(regionalweekavg,
             "regionalweekavg",
