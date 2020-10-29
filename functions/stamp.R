@@ -1,6 +1,9 @@
 #' Functions to create and check the timestamps.
 #' 
 stamp <- function(x, suffix = ".csv"){
+  if(substring(suffix,1,1) != "."){
+    suffix <- paste0(".",suffix)
+  }
   # make sure the same format is used everywhere.
   thedate <- format(Sys.Date(), "%Y-%m-%d")
   paste0(x, thedate, suffix)
