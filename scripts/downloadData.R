@@ -113,7 +113,7 @@ hosptemp <- filter(rawhospit, PROVINCE == "All") %>%
 deathtemp <- filter(rawdeaths, SEX == "All" & AGEGROUP == "All") %>%
   select(-c(SEX, AGEGROUP))
 
-regionalsmooth <- full_join(casetemp,
+regionalweekavg <- full_join(casetemp,
                           testtemp,
                           by = c("REGION","DATE")) %>%
   full_join(hosptemp, by = c("REGION","DATE")) %>%
@@ -122,7 +122,7 @@ regionalsmooth <- full_join(casetemp,
   mutate(across(where(is.numeric),replaceby0)) %>%
   group_by(REGION) %>%
   mutate(across(where(is.numeric),
-                ~ zoo::rollmean(., 7, align = "right", fill = NA))) %>%
+                ~ zoo::rollmean(., 7, align = "right", fill = NA)))  %>%
   mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS,
          CHANGE_CASES = changeabsolute(CASES),
          CHANGE_TESTS = changeabsolute(TESTS_ALL),
@@ -145,8 +145,8 @@ regionalsmooth <- full_join(casetemp,
 #                 ~ zoo::rollmean(., 7, align = "right", fill = NA)))
 
 
-replacefile(regionalsmooth,
-            "regionalsmooth",
+replacefile(regionalweekavg,
+            "regionalweekavg",
             "rds",
             "Processed")
 message("Succes!")

@@ -5,11 +5,11 @@ library(gganimate)
 library(dplyr)
 # For this, you need 
 # source("scripts/downloadData.R")
-thefile <- dir("Processed", pattern = "regionalsmooth")
+thefile <- dir("Processed", pattern = "regionalweekavg")
 regionalsmooth <- readRDS(file.path("Processed", thefile))
 # Make plot data
 pdata <- filter(regionalsmooth, REGION == "Belgium",
-                as.Date(DATE) > "2020-05-01",
+ #               as.Date(DATE) > "2020-05-01",
                 as.Date(DATE) < (Sys.Date() - 4)) %>%
   na.omit() %>%
   mutate(posrate = round(TESTS_ALL_POS/TESTS_ALL*100, 1),
@@ -27,15 +27,32 @@ grid$val[grid$val > 100] <- 100
 grid <- na.omit(grid)
 
 # Make lines
-refline <- c(0.005, seq(0.01, ceiling(max(pdata$posrate))/100,
-                        by = 0.01))
+maxprate <- max(pdata$posrate)
+
+if(maxprate <= 10){
+  refline <- c(0.005, seq(0.01, ceiling(max(pdata$posrate))/100,
+                          by = 0.01))
+} else{
+  refline <- c(0.01,0.02,0.03,
+               seq(0.05, ceiling(maxprate/5)/20,
+                   by = 0.05))
+}
+
 
 # Make labels
 maxx <- max(pdata$TESTS_ALL)*1.05
 maxy <- max(pdata$TESTS_ALL_POS)*1.05
+
+# Position
+refvert <- head(refline, -2)
+refhoriz <- tail(refline, 2)
+ylab <- maxx * 0.75 * c(refvert,
+                        rep(tail(refvert,1),2))+ maxy*0.02
+xlab <- maxx* c(rep(0.75,length(refvert)),
+                0.65,0.55)
 labels <- data.frame(
-  y=maxx * 0.75 * refline + maxy*0.02,
-  x = rep(maxx*0.75,length(refline)),
+  y=ylab,
+  x = xlab,
   label = paste0(refline*100,"%")
 )
 
