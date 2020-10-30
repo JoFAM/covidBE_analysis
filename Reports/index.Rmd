@@ -9,6 +9,12 @@ I try to bring some insight into what the numbers mean. And what they don't.
 </p>
 
 <div class="jumbotron">
+  <h2>How turning the pandemic takes time.</h2>
+  
+  <p><a href="LagInPeaks.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
+</div>
+
+<div class="jumbotron">
   <h2>How differences in infectivity shape the COVID pandemic.</h2>
   
   <p><a href="Overdispersion.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
@@ -20,6 +26,9 @@ I try to bring some insight into what the numbers mean. And what they don't.
   <p><a href="FalseDiscoveryRate.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
 </div>
 
+Code for the different articles and the website can be found at the github repo:
+
+https://github.com/JoFAM/covidBE_analysis
 
 If you find errors or like to know something more, please feel free to raise an issue on the issues page:
 

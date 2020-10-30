@@ -123,12 +123,6 @@ regionalraw <- full_join(casetemp,
   filter(as.Date(DATE) >= as.Date("2020-03-15")) %>%
   mutate(across(where(is.numeric),replaceby0)) %>%
   group_by(REGION) %>%
-  mutate(across(c(CASES, TESTS_ALL, TESTS_ALL_POS,
-                     NEW_IN, DEATHS, TOTAL_IN, 
-                     TOTAL_IN_ICU, TOTAL_IN_RESP,
-                     TOTAL_IN_ECMO),
-                changeabsolute,
-                .names = "CHANGE_{.col}")) %>%
   mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS) %>%
   as.data.frame()
 
@@ -137,6 +131,9 @@ regionalweekavg <- regionalraw %>%
   group_by(REGION) %>%
   mutate(across(where(is.numeric),
                 ~ zoo::rollmean(., 7, align = "right", fill = NA)))  %>%
+  mutate(across(where(is.numeric),
+                changeabsolute,
+                .names = "CHANGE_{.col}")) %>%
   mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS) %>%
   as.data.frame()
 

@@ -1,0 +1,639 @@
+NIS;Naam;Inwoners
+01000;België;11.376.070
+02000;Vlaams Gewest;6.552.967
+03000;Waals Gewest;3.624.377
+04000;Brussels Hoofdstedelijk Gewest;1.198.726
+10000;Provincie Antwerpen;1.847.486
+11000;Arrondissement Antwerpen;1.045.593
+11001;Aartselaar;14.304
+11002;Antwerpen;523.248
+11004;Boechout;13.120
+11005;Boom;17.970
+11007;Borsbeek;10.685
+11008;Brasschaat;37.850
+11009;Brecht;29.010
+11013;Edegem;21.947
+11016;Essen;19.079
+11018;Hemiksem;11.368
+11021;Hove (Antwerpen);8.115
+11022;Kalmthout;18.608
+11023;Kapellen (Antwerpen);26.771
+11024;Kontich;21.074
+11025;Lint;8.787
+11029;Mortsel;25.824
+11030;Niel;10.424
+11035;Ranst;18.981
+11037;Rumst;15.114
+11038;Schelle;8.433
+11039;Schilde;19.585
+11040;Schoten;34.462
+11044;Stabroek;18.529
+11050;Wijnegem;9.711
+11052;Wommelgem;12.893
+11053;Wuustwezel;20.671
+11054;Zandhoven;12.985
+11055;Zoersel;21.739
+11056;Zwijndrecht;19.002
+11057;Malle;15.304
+12000;Arrondissement Mechelen;342.945
+12002;Berlaar;11.507
+12005;Bonheiden;14.951
+12007;Bornem;21.186
+12009;Duffel;17.385
+12014;Heist-op-den-Berg;42.478
+12021;Lier;35.712
+12025;Mechelen;86.304
+12026;Nijlen;22.813
+12029;Putte;17.584
+12035;Sint-Katelijne-Waver;20.870
+12040;Willebroek;26.223
+12041;Puurs-Sint-Amands;25.932
+13000;Arrondissement Turnhout;458.948
+13001;Arendonk;13.281
+13002;Baarle-Hertog;2.705
+13003;Balen;22.426
+13004;Beerse;17.931
+13006;Dessel;9.540
+13008;Geel;39.923
+13010;Grobbendonk;11.123
+13011;Herentals;28.117
+13012;Herenthout;8.951
+13013;Herselt;14.537
+13014;Hoogstraten;21.333
+13016;Hulshout;10.382
+13017;Kasterlee;18.600
+13019;Lille;16.512
+13021;Meerhout;10.326
+13023;Merksplas;8.619
+13025;Mol;36.544
+13029;Olen;12.491
+13031;Oud-Turnhout;13.517
+13035;Ravels;14.871
+13036;Retie;11.240
+13037;Rijkevorsel;11.932
+13040;Turnhout;44.136
+13044;Vorselaar;7.848
+13046;Vosselaar;11.159
+13049;Westerlo;24.884
+13053;Laakdal;16.020
+20001;Provincie Vlaams-Brabant;1.138.489
+20002;Provincie Waals-Brabant;401.106
+21000;Arrondissement Brussel-Hoofdstad;1.198.726
+21001;Anderlecht;118.382
+21002;Oudergem;33.740
+21003;Sint-Agatha-Berchem;24.830
+21004;Brussel;179.277
+21005;Etterbeek;47.786
+21006;Evere;41.131
+21007;Vorst (Brussel-Hoofdstad);56.008
+21008;Ganshoren;24.865
+21009;Elsene;86.513
+21010;Jette;52.201
+21011;Koekelberg;21.774
+21012;Sint-Jans-Molenbeek;97.005
+21013;Sint-Gillis;50.002
+21014;Sint-Joost-ten-Node;27.032
+21015;Schaarbeek;133.010
+21016;Ukkel;82.275
+21017;Watermaal-Bosvoorde;25.012
+21018;Sint-Lambrechts-Woluwe;56.303
+21019;Sint-Pieters-Woluwe;41.580
+23000;Arrondissement Halle-Vilvoorde;632.134
+23002;Asse;32.958
+23003;Beersel;25.069
+23009;Bever;2.204
+23016;Dilbeek;42.434
+23023;Galmaarden;8.725
+23024;Gooik;9.236
+23025;Grimbergen;37.355
+23027;Halle (Halle-Vilvoorde);39.096
+23032;Herne;6.643
+23033;Hoeilaart;11.172
+23038;Kampenhout;11.898
+23039;Kapelle-op-den-Bos;9.396
+23044;Liedekerke;13.188
+23045;Londerzeel;18.620
+23047;Machelen (Halle-Vilvoorde);15.417
+23050;Meise;19.164
+23052;Merchtem;16.294
+23060;Opwijk;14.378
+23062;Overijse;25.169
+23064;Pepingen;4.372
+23077;Sint-Pieters-Leeuw;34.038
+23081;Steenokkerzeel;12.090
+23086;Ternat;15.481
+23088;Vilvoorde;44.015
+23094;Zaventem;33.806
+23096;Zemst;23.325
+23097;Roosdaal;11.629
+23098;Drogenbos;5.599
+23099;Kraainem;13.690
+23100;Linkebeek;4.760
+23101;Sint-Genesius-Rode;18.296
+23102;Wemmel;16.347
+23103;Wezembeek-Oppem;14.021
+23104;Lennik;9.024
+23105;Affligem;13.225
+24000;Arrondissement Leuven;506.355
+24001;Aarschot;29.965
+24007;Begijnendijk;10.053
+24008;Bekkevoort;6.274
+24009;Bertem;9.958
+24011;Bierbeek;10.025
+24014;Boortmeerbeek;12.379
+24016;Boutersem;8.167
+24020;Diest;23.824
+24028;Geetbets;6.035
+24033;Haacht;14.470
+24038;Herent;21.632
+24041;Hoegaarden;6.942
+24043;Holsbeek;9.905
+24045;Huldenberg;9.892
+24048;Keerbergen;12.743
+24054;Kortenaken;7.875
+24055;Kortenberg;20.214
+24059;Landen;15.961
+24062;Leuven;101.396
+24066;Lubbeek;14.393
+24086;Oud-Heverlee;11.099
+24094;Rotselaar;16.678
+24104;Tervuren;22.248
+24107;Tienen;34.675
+24109;Tremelo;14.842
+24130;Zoutleeuw;8.498
+24133;Linter;7.255
+24134;Scherpenheuvel-Zichem;22.952
+24135;Tielt-Winge;10.707
+24137;Glabbeek;5.298
+25000;Arrondissement Nijvel;401.106
+25005;Bevekom;7.222
+25014;Eigenbrakel;39.837
+25015;Kasteelbrakel;10.447
+25018;Chaumont-Gistoux;11.731
+25023;Court-Saint-Etienne;10.500
+25031;Genepiën;15.353
+25037;Graven;13.368
+25043;Incourt;5.388
+25044;Itter;6.865
+25048;Geldenaken;14.079
+25050;Terhulpen;7.320
+25068;Mont-Saint-Guibert;7.562
+25072;Nijvel;28.521
+25084;Perwijs (Nijvel);9.291
+25091;Rixensart;22.401
+25105;Tubeke;25.914
+25107;Villers-la-Ville;10.713
+25110;Waterloo;30.174
+25112;Waver;34.305
+25117;Chastre;7.592
+25118;Hélécine;3.479
+25119;Lasne;14.236
+25120;Orp-Jauche;8.856
+25121;Ottignies-Louvain-la-Neuve;31.385
+25122;Ramillies;6.394
+25123;Rebecq;11.006
+25124;Walhain;7.167
+30000;Provincie West-Vlaanderen;1.191.059
+31000;Arrondissement Brugge;281.780
+31003;Beernem;15.687
+31004;Blankenberge;20.349
+31005;Brugge;118.284
+31006;Damme;11.008
+31012;Jabbeke;13.880
+31022;Oostkamp;23.580
+31033;Torhout;20.530
+31040;Zedelgem;22.635
+31042;Zuienkerke;2.730
+31043;Knokke-Heist;33.097
+32000;Arrondissement Diksmuide;51.428
+32003;Diksmuide;16.739
+32006;Houthulst;10.032
+32010;Koekelare;8.784
+32011;Kortemark;12.584
+32030;Lo-Reninge;3.289
+33000;Arrondissement Ieper;106.251
+33011;Ieper;34.964
+33016;Mesen;1.040
+33021;Poperinge;19.718
+33029;Wervik;18.643
+33037;Zonnebeke;12.445
+33039;Heuvelland;7.862
+33040;Langemark-Poelkapelle;7.920
+33041;Vleteren;3.659
+34000;Arrondissement Kortrijk;289.114
+34002;Anzegem;14.609
+34003;Avelgem;10.065
+34009;Deerlijk;11.796
+34013;Harelbeke;27.886
+34022;Kortrijk;76.265
+34023;Kuurne;13.318
+34025;Lendelede;5.742
+34027;Menen;33.190
+34040;Waregem;38.125
+34041;Wevelgem;31.412
+34042;Zwevegem;24.619
+34043;Spiere-Helkijn;2.087
+35000;Arrondissement Oostende;156.468
+35002;Bredene;17.828
+35005;Gistel;12.063
+35006;Ichtegem;13.939
+35011;Middelkerke;19.371
+35013;Oostende;71.332
+35014;Oudenburg;9.300
+35029;De Haan;12.635
+36000;Arrondissement Roeselare;151.873
+36006;Hooglede;9.950
+36007;Ingelmunster;10.928
+36008;Izegem;27.729
+36010;Ledegem;9.716
+36011;Lichtervelde;8.793
+36012;Moorslede;11.080
+36015;Roeselare;62.301
+36019;Staden;11.376
+37000;Arrondissement Tielt;92.615
+37002;Dentergem;8.484
+37007;Meulebeke;10.906
+37010;Oostrozebeke;7.849
+37011;Pittem;6.752
+37012;Ruiselede;5.387
+37015;Tielt (Tielt);20.422
+37017;Wielsbeke;9.584
+37018;Wingene;14.243
+37020;Ardooie;8.988
+38000;Arrondissement Veurne;61.530
+38002;Alveringem;5.089
+38008;De Panne;11.129
+38014;Koksijde;21.957
+38016;Nieuwpoort;11.565
+38025;Veurne;11.790
+40000;Provincie Oost-Vlaanderen;1.505.053
+41000;Arrondissement Aalst;289.175
+41002;Aalst (Aalst);85.715
+41011;Denderleeuw;20.086
+41018;Geraardsbergen;33.403
+41024;Haaltert;18.443
+41027;Herzele;17.723
+41034;Lede;18.628
+41048;Ninove;38.692
+41063;Sint-Lievens-Houtem;10.255
+41081;Zottegem;26.373
+41082;Erpe-Mere;19.857
+42000;Arrondissement Dendermonde;200.307
+42003;Berlare;14.849
+42004;Buggenhout;14.475
+42006;Dendermonde;45.673
+42008;Hamme (Dendermonde);24.829
+42010;Laarne;12.487
+42011;Lebbeke;19.195
+42023;Waasmunster;10.768
+42025;Wetteren;25.477
+42026;Wichelen;11.578
+42028;Zele;20.976
+43000;Arrondissement Eeklo;84.591
+43002;Assenede;14.200
+43005;Eeklo;20.890
+43007;Kaprijke;6.429
+43010;Maldegem;23.689
+43014;Sint-Laureins;6.684
+43018;Zelzate;12.699
+44000;Arrondissement Gent;556.916
+44012;De Pinte;10.532
+44013;Destelbergen;18.026
+44019;Evergem;35.239
+44020;Gavere;12.769
+44021;Gent;260.341
+44034;Lochristi;22.300
+44040;Melle;11.574
+44043;Merelbeke;24.634
+44045;Moerbeke (Gent);6.455
+44048;Nazareth;11.574
+44052;Oosterzele;13.546
+44064;Sint-Martens-Latem;8.468
+44073;Wachtebeke;7.683
+44081;Zulte;15.720
+44083;Deinze;43.264
+44084;Aalter;28.784
+44085;Lievegem;26.007
+45000;Arrondissement Oudenaarde;123.868
+45035;Oudenaarde;31.132
+45041;Ronse;26.337
+45059;Brakel;14.781
+45060;Kluisbergen;6.453
+45061;Wortegem-Petegem;6.440
+45062;Horebeke;2.048
+45063;Lierde;6.567
+45064;Maarkedal;6.338
+45065;Zwalm;8.134
+45068;Kruisem;15.638
+46000;Arrondissement Sint-Niklaas;250.196
+46003;Beveren (Sint-Niklaas);48.192
+46013;Kruibeke;16.657
+46014;Lokeren;41.438
+46020;Sint-Gillis-Waas;19.273
+46021;Sint-Niklaas (Sint-Niklaas);76.756
+46024;Stekene;18.352
+46025;Temse;29.528
+50000;Provincie Henegouwen;1.341.645
+51000;Arrondissement Aat;127.475
+51004;Aat;29.164
+51008;Beloeil;14.032
+51009;Bernissart;11.868
+51012;Brugelette;3.658
+51014;Chièvres;6.899
+51017;Elzele;6.001
+51019;Vloesberg;3.420
+51065;Frasnes-lez-Anvaing;11.740
+51067;Edingen;13.734
+51068;Opzullik;8.407
+51069;Lessen;18.552
+52000;Arrondissement Charleroi;396.307
+52010;Chapelle-lez-Herlaimont;14.900
+52011;Charleroi;201.816
+52012;Châtelet;36.101
+52015;Courcelles;31.376
+52018;Farciennes;11.247
+52021;Fleurus;22.738
+52022;Fontaine-l’Evêque;17.801
+52025;Gerpinnes;12.660
+52048;Montigny-le-Tilleul;10.136
+52055;Pont-à-Celles;17.287
+52074;Aiseau-Presles;10.788
+52075;Les Bons Villers;9.457
+53000;Arrondissement Bergen;258.608
+53014;Boussu;19.856
+53020;Dour;16.716
+53028;Frameries;21.878
+53039;Hensies;6.828
+53044;Jurbeke;10.417
+53046;Lens;4.508
+53053;Bergen;95.299
+53065;Quaregnon;19.006
+53068;Quiévrain;6.759
+53070;Saint-Ghislain;23.335
+53082;Colfontaine;20.762
+53083;Honnelles;5.139
+53084;Quévy;8.105
+55000;Arrondissement Zinnik;103.398
+55004;’s Gravenbrakel;21.649
+55035;Le Roeulx;8.617
+55040;Zinnik;27.603
+55050;Ecaussinnes;11.135
+55085;Seneffe;11.272
+55086;Manage;23.122
+56000;Arrondissement Thuin;91.580
+56001;Anderlues;12.254
+56005;Beaumont;7.137
+56016;Chimay;9.841
+56022;Erquelinnes;9.940
+56029;Froidchapelle;3.953
+56044;Lobbes;5.862
+56049;Merbes-le-Château;4.251
+56051;Momignies;5.309
+56078;Thuin;14.671
+56086;Ham-sur-Heure-Nalinnes;13.529
+56088;Sivry-Rance;4.833
+57000;Arrondissement Doornik-Moeskroen;223.308
+57003;Antoing;7.760
+57018;Celles (Doornik);5.665
+57027;Estaimpuis;10.424
+57062;Pecq;5.598
+57064;Péruwelz;17.113
+57072;Rumes;5.186
+57081;Doornik;69.554
+57093;Brunehaut;8.105
+57094;Leuze-en-Hainaut;13.886
+57095;Mont-de-l’Enclus;3.720
+57096;Moeskroen;58.234
+57097;Komen-Waasten;18.063
+58000;Arrondissement La Louvière;140.969
+58001;La Louvière;80.637
+58002;Binche;33.598
+58003;Estinnes;7.715
+58004;Morlanwelz;19.019
+60000;Provincie Luik;1.105.326
+61000;Arrondissement Hoei;113.097
+61003;Amay;14.305
+61010;Burdinne;3.236
+61012;Clavier;4.617
+61019;Ferrières;4.918
+61024;Hamoir;3.872
+61028;Héron;5.277
+61031;Hoei;21.293
+61039;Marchin;5.460
+61041;Modave;4.200
+61043;Nandrin;5.826
+61048;Ouffet;2.802
+61063;Verlaine;4.177
+61068;Villers-Le-Bouillet;6.503
+61072;Wanze;13.576
+61079;Anthisnes;4.204
+61080;Engis;6.122
+61081;Tinlot;2.709
+62000;Arrondissement Luik;623.953
+62003;Ans;28.238
+62006;Awans;9.353
+62009;Aywaille;12.405
+62011;Bitsingen;8.986
+62015;Beyne-Heusay;12.019
+62022;Chaudfontaine;20.935
+62026;Comblain-au-Pont;5.381
+62027;Dalhem;7.412
+62032;Esneux;12.889
+62038;Fléron;16.495
+62051;Herstal;39.958
+62060;Juprelle;9.288
+62063;Luik;197.355
+62079;Oupeye;25.297
+62093;Saint-Nicolas (Luik);24.251
+62096;Seraing;64.270
+62099;Soumagne;16.888
+62100;Sprimont;14.645
+62108;Wezet;17.767
+62118;Grâce-Hollogne;22.541
+62119;Blegny;13.300
+62120;Flémalle;26.174
+62121;Neupré;9.934
+62122;Trooz;8.172
+63000;Arrondissement Verviers;287.374
+63001;Amel;5.480
+63003;Aubel;4.221
+63004;Baelen;4.434
+63012;Büllingen;5.473
+63013;Bütgenbach;5.605
+63020;Dison;15.405
+63023;Eupen;19.526
+63035;Herve;17.598
+63038;Jalhay;8.590
+63040;Kelmis;11.061
+63045;Lierneux;3.601
+63046;Limburg;5.939
+63048;Lontzen;5.695
+63049;Malmedy;12.654
+63057;Olne;4.087
+63058;Pepinster;9.765
+63061;Raeren;10.707
+63067;Sankt Vith;9.682
+63072;Spa;10.378
+63073;Stavelot;7.145
+63075;Stoumont;3.104
+63076;Theux;12.025
+63079;Verviers;55.198
+63080;Weismes;7.429
+63084;Welkenraedt;9.920
+63086;Trois-Ponts;2.570
+63087;Burg-Reuland;3.956
+63088;Plombières;10.401
+63089;Thimister-Clermont;5.725
+64000;Arrondissement Borgworm;80.902
+64008;Berloz;3.080
+64015;Braives;6.325
+64021;Crisnée;3.352
+64023;Donceel;3.048
+64025;Fexhe-le-Haut-Clocher;3.263
+64029;Geer;3.430
+64034;Hannuit;16.435
+64047;Lijsem;3.292
+64056;Oerle;3.912
+64063;Remicourt;5.904
+64065;Saint-Georges-sur-Meuse;6.784
+64074;Borgworm;15.168
+64075;Wasseiges;2.962
+64076;Faimes;3.947
+70000;Provincie Limburg;870.880
+71000;Arrondissement Hasselt;416.678
+71002;As;8.190
+71004;Beringen;46.065
+71011;Diepenbeek;19.137
+71016;Genk;66.110
+71017;Gingelom;8.391
+71020;Halen;9.461
+71022;Hasselt;77.651
+71024;Herk-de-Stad;12.661
+71034;Leopoldsburg;15.625
+71037;Lummen;14.762
+71045;Nieuwerkerken (Hasselt);6.960
+71053;Sint-Truiden;40.473
+71057;Tessenderlo;18.514
+71066;Zonhoven;21.214
+71067;Zutendaal;7.234
+71069;Ham;10.824
+71070;Heusden-Zolder;33.406
+72000;Arrondissement Maaseik;250.843
+72003;Bocholt;13.085
+72004;Bree;16.005
+72018;Kinrooi;12.233
+72020;Lommel;34.044
+72021;Maaseik;25.201
+72030;Peer;16.406
+72037;Hamont-Achel;14.427
+72038;Hechtel-Eksel;12.290
+72039;Houthalen-Helchteren;30.623
+72041;Dilsen-Stokkem;20.454
+72042;Oudsbergen;23.423
+72043;Pelt;32.652
+73000;Arrondissement Tongeren;203.359
+73001;Alken;11.565
+73006;Bilzen;32.318
+73009;Borgloon;10.697
+73022;Heers;7.290
+73028;Herstappe;88
+73032;Hoeselt;9.685
+73040;Kortessem;8.446
+73042;Lanaken;25.818
+73066;Riemst;16.665
+73083;Tongeren;31.032
+73098;Wellen;7.402
+73107;Maasmechelen;38.193
+73109;Voeren;4.160
+80000;Provincie Luxemburg;283.227
+81000;Arrondissement Aarlen;62.202
+81001;Aarlen;29.733
+81003;Attert;5.537
+81004;Aubange;16.927
+81013;Martelange;1.820
+81015;Messancy;8.185
+82000;Arrondissement Bastenaken;48.183
+82003;Bastenaken;15.894
+82005;Bertogne;3.579
+82009;Fauvillers;2.253
+82014;Houffalize;5.222
+82032;Vielsalm;7.821
+82036;Vaux-sur-Sûre;5.651
+82037;Gouvy;5.206
+82038;Sainte-Ode;2.557
+83000;Arrondissement Marche-en-Famenne;56.143
+83012;Durbuy;11.374
+83013;Erezée;3.228
+83028;Hotton;5.531
+83031;La Roche-en-Ardenne;4.194
+83034;Marche-en-Famenne;17.455
+83040;Nassogne;5.474
+83044;Rendeux;2.582
+83049;Tenneville;2.842
+83055;Manhay;3.463
+84000;Arrondissement Neufchâteau;63.041
+84009;Bertrix;8.763
+84010;Bouillon;5.353
+84016;Daverdisse;1.407
+84029;Herbeumont;1.627
+84033;Léglise;5.366
+84035;Libin;5.164
+84043;Neufchâteau (Neufchâteau);7.679
+84050;Paliseul;5.393
+84059;Saint-Hubert;5.571
+84068;Tellin;2.468
+84075;Wellin;3.064
+84077;Libramont-Chevigny;11.186
+85000;Arrondissement Virton;53.658
+85007;Chiny;5.175
+85009;Etalle;5.855
+85011;Florenville;5.629
+85024;Meix-devant-Virton;2.831
+85026;Musson;4.508
+85034;Saint-Léger (Virton);3.592
+85039;Tintigny;4.276
+85045;Virton;11.323
+85046;Habay;8.387
+85047;Rouvroy;2.082
+90000;Provincie Namen;493.073
+91000;Arrondissement Dinant;110.610
+91005;Anhée;7.117
+91013;Beauraing;9.160
+91015;Bièvre;3.307
+91030;Ciney;16.439
+91034;Dinant;13.544
+91054;Gedinne;4.563
+91059;Hamois;7.349
+91064;Havelange;5.130
+91072;Houyet;4.876
+91103;Onhaye;3.201
+91114;Rochefort;12.554
+91120;Somme-Leuze;5.587
+91141;Yvoir;9.163
+91142;Hastière;5.979
+91143;Vresse-sur-Semois;2.641
+92000;Arrondissement Namen;316.058
+92003;Andenne;27.017
+92006;Assesse;6.964
+92035;Eghezée;16.247
+92045;Floreffe;8.114
+92048;Fosses-la-Ville;10.449
+92054;Gesves;7.210
+92087;Mettet;13.037
+92094;Namen;110.939
+92097;Ohey;5.090
+92101;Profondeville;12.204
+92114;Sombreffe;8.420
+92137;Sambreville;28.211
+92138;Fernelmont;7.923
+92140;Jemeppe-sur-Sambre;19.074
+92141;La Bruyère;9.226
+92142;Gembloux;25.933
+93000;Arrondissement Philippeville;66.405
+93010;Cerfontaine;4.927
+93014;Couvin;13.782
+93018;Doische;2.951
+93022;Florennes;11.410
+93056;Philippeville;9.228
+93088;Walcourt;18.376
+93090;Viroinval;5.731
