@@ -8,6 +8,7 @@ source("functions/helperfunctions.R")
 
 add_totals <- function(x,values, along, groups, name = "All",
                        na.rm = FALSE, use.na = TRUE){
+  noalong <- missing(along)
   # Check the groups
   dims <- length(groups)
   # Check the names
@@ -15,7 +16,11 @@ add_totals <- function(x,values, along, groups, name = "All",
     name <- rep(name,dims)
   }
   # make the tapply list
-  applyby <- x[c(groups, along)]
+  if(noalong){
+    applyby <- x[groups]
+  } else {
+    applyby <- x[c(groups, along)]
+  }
   mforsum <- seq.int(dims)
   
   if(use.na){

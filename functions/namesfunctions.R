@@ -15,7 +15,7 @@ translate_regions <- function(x){
 translate_districts <- function(x_nl, x_fr,region){
   case_when(
     region == "Flanders" ~ str_remove(x_nl, "Arrondissement "),
-    region == "Wallonia" ~ str_remove(x_fr, "Arrondissement d[eu']\\s?"),
+    region == "Wallonia" ~ str_remove(x_fr, "Arrondissement d.{1}\\s?"),
     region == "Brussels" ~ str_remove(x_nl,"Arrondissement ")
   )
 }
