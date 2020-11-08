@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>How turning a pandemic takes time.</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="myown.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Analyses related to COVID in Belgium</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="LagInPeaks.html">Lag in peak ICU</a>
+    </li>
+    <li>
+      <a href="FalseDiscoveryRate.html">False posivites</a>
+    </li>
+    <li>
+      <a href="Overdispersion.html">Overdispersion</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">How turning a pandemic takes time.</h1>
+
+</div>
+
+
+<p><em>This report reflects the situation on 2020-11-08.</em></p>
+<p>COVID doesn’t always mean you end up in intensive care, but if you do, it takes several days from infection until you’re admitted to hospital and eventually ICU. This means that the effect of measures taken by a government will only be felt in ICU after a certain period of time. So one should be able to get some idea about the situation in ICU some time from now based on the current trends in new cases. As changes in testing strategy have a big impact on the reporting of cases, I use the number of new hospital admissions instead.</p>
+<pre class="r"><code># In order to run the code in this report, you first need to
+# source(&quot;scripts/downloadData.R&quot;)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(scales)
+thefuns &lt;- dir(&quot;functions&quot;, pattern = &quot;\\.R&quot;)
+for(i in thefuns){
+  source(file.path(&quot;functions&quot;,i))
+}
+regional &lt;- readRDS(file.path(&quot;Processed&quot;,
+                              stamp(&quot;regionalper1M&quot;,&quot;.rds&quot;))) %&gt;%
+  mutate(DATE = as.Date(DATE),
+         WAVE = ifelse(DATE &lt; &quot;2020-07-01&quot;,&quot;First wave&quot;, &quot;Second wave&quot;)) %&gt;%
+  filter(DATE &lt; Sys.Date() - 1)</code></pre>
+<div id="available-data" class="section level3">
+<h3>Available data</h3>
+<p>I will use the data provided by <a href="https://epistat.wiv-isp.be/Covid/">Sciensano</a> for Belgium. In order to get some idea about variability, I look at the regions. To keep the differences in population in mind, I chose to correct for population size.</p>
+<p>For each of those, I try to look for the peaks, in order to calculate how many days it takes between peaks. But the data poses a few problems. First of all, reporting is lower in the weekend. This could lead to the conclusion that peaks occur simultaneously, which is obviously not the case. To overcome this, I smooth these bumps out using a technique called a <a href="https://en.wikipedia.org/wiki/Kernel_smoother#Gaussian_kernel_smoother">Gaussian kernel smoother</a> with a bandwith of 7. The result of this is illustrated in the figure below.</p>
+<pre class="r"><code># Smoothing function
+normalsmooth &lt;- function(var,date,bw = 7){
+  res &lt;- ksmooth(date, var,
+                 kernel = &quot;normal&quot;,
+                 bandwidth = bw)
+  res$y
+}
+
+regionals &lt;- mutate(regional, DATE = as.Date(DATE)) %&gt;%
+  group_by(REGION) %&gt;%
+  mutate(across(where(is.numeric),
+                ~normalsmooth(.x, DATE, bw = 7),
+                .names = &quot;S_{.col}&quot;))
+
+ggplot(filter(regionals, REGION == &quot;Belgium&quot;), 
+       aes(x = DATE, y = S_NEW_IN)) +
+  geom_col(aes(y = NEW_IN), width = 1,
+           fill = &quot;gray&quot;) +
+  geom_line(lwd = 1) +
+  labs(x = &quot;Date&quot;, y = &quot;New hospitalisations per 1M&quot;,
+       title = &quot;Gaussian kernel smoothing on hospitalisations in Belgium&quot;,
+       subtitle = paste(&quot;Data downloaded from https://epistat.wiv-isp.be/Covid/ on&quot;, Sys.Date()),
+       caption = &quot;@JorisMeys&quot;) +
+  theme_minimal() +
+   scale_x_date(date_breaks = &quot;1 months&quot;,
+               date_labels = &quot;%b&quot; )</code></pre>
+<p><img src="LagInPeaks_files/figure-html/unnamed-chunk-2-1.png" width="80%" /></p>
+</div>
+<div id="number-of-people-in-hospital-and-icu" class="section level3">
+<h3>Number of people in hospital and ICU</h3>
+<p>The relation between the total amount of patients in hospital and in ICU comes as no surprise. Yet, surprisingly there’s no real lag to be found in the data. The relation is strikingly linear and similar between the regions during the first wave. During the second wave, there’s a notable difference in fraction of patients that ends up in ICU in Brussels and Wallonia. This might reflect more stringent criteria used for ICU admission.</p>
+<pre class="r"><code>p5 &lt;- ggplot(filter(regionals,
+                    !REGION %in% c(&quot;Belgium&quot;,&quot;unknown&quot;)),
+             aes(x = S_TOTAL_IN,
+                 y = S_TOTAL_IN_ICU,
+                 color = DATE,
+                 group = REGION)) +
+  geom_point(size = 2) +
+  geom_path(lwd = 1) +
+  labs(y = &quot;&quot;, x = &quot;&quot;)
+
+p6 &lt;- p5 + facet_wrap(vars(REGION),
+                      nrow = 1) +
+  labs(y = &quot;Total patients in ICU per 1M&quot;,
+       x = &quot;Total patients in hospital per 1M&quot;)
+p6 + 
+  p5 + geom_smooth(mapping = aes(group = WAVE),
+                       method = &quot;lm&quot;, se = FALSE,
+                   color = &quot;red&quot;, linetype = 2) +
+  facet_wrap(vars(&quot;Combined&quot;)) +
+  plot_layout(widths = c(3,1),
+              guides = &quot;collect&quot;) +
+  plot_annotation(title = &quot;Total patients in hospital and ICU: Belgium&quot;,
+          
+       subtitle = paste(&quot;Data downloaded from https://epistat.wiv-isp.be/Covid/ on&quot;, Sys.Date()),
+       caption = &quot;@JorisMeys&quot;)</code></pre>
+<p><img src="LagInPeaks_files/figure-html/unnamed-chunk-3-1.png" width="80%" /></p>
+<p>In both Brussels and Wallonia the relation changes at a certain point during the second wave. This likely points to a shift in strategy regarding which patients are sent to ICU.</p>
+</div>
+<div id="predicting-peak-of-total-in-icu" class="section level3">
+<h3>Predicting peak of total in ICU</h3>
+<p>Looking at the number of incoming patients and the total number in ICU, a different relation pops up. During the first wave, the total amount of patients in ICU kept rising for a few days after the number of new admissions started to decline. This is to be expected, as patients spend a considerable amount of time in ICU. So it takes a while for the outflow to catch up with a reduced inflow.</p>
+<p>Keep in mind this pattern is to be expected only when looking at a peak. So in the plots below, I focus on the first and second peak.</p>
+<pre class="r"><code>p7 &lt;- ggplot(filter(regionals,
+                    REGION == c(&quot;Belgium&quot;)),
+             aes(x = S_NEW_IN,
+                 y = S_TOTAL_IN_ICU,
+                 color = DATE)) +
+  geom_point(size = 2) +
+  geom_path(lwd = 1) +
+  labs(y = &quot;&quot;, x = &quot;&quot;) 
+
+p8 &lt;- ggplot(filter(regionals,
+                    !REGION %in% c(&quot;Belgium&quot;,&quot;unknown&quot;)),
+             aes(x = S_NEW_IN,
+                 y = S_TOTAL_IN_ICU,
+                 color = DATE,
+                 group = REGION)) +
+  geom_point(size = 2) +
+  geom_path(lwd = 1) +
+  labs(y = &quot;&quot;, x = &quot;&quot;)  + facet_wrap(vars(REGION),
+                      nrow = 1) +
+  labs(y = &quot;Total patients in ICU per 1M&quot;,
+       x = &quot;New hospital admissions per 1M&quot;)
+p8 + 
+  p7 + 
+  facet_wrap(vars(&quot;Belgium&quot;)) +
+  plot_layout(widths = c(3,1),
+              guides = &quot;collect&quot;) +
+  plot_annotation(title = &quot;ICU occupancy in function of hospital admissions: Belgium&quot;,
+          
+       subtitle = paste(&quot;Data downloaded from https://epistat.wiv-isp.be/Covid/ on&quot;, Sys.Date()),
+       caption = &quot;@JorisMeys&quot;)</code></pre>
+<p><img src="LagInPeaks_files/figure-html/unnamed-chunk-4-1.png" width="80%" /></p>
+<p>In order to find the lag between the peak in new admissions and peak load in ICU, I look at how far the real number of ICU patients lie from a curve fitted through those numbers in function of the number of new admissions <span class="math inline">\(x\)</span> days earlier. As the second peak only begin to emerge, I use the data of the first peak to estimate this delay. I also look at the different regions rather than the numbers of Belgium as a whole, as a proxy for possible variation in this lag.</p>
+<pre class="r"><code>cors &lt;- numeric(16)
+tmp &lt;- filter(regionals,
+              !REGION %in% c(&quot;Belgium&quot;,&quot;unknown&quot;),
+              DATE &lt; as.Date(&quot;2020-07-01&quot;)) %&gt;%
+  select(S_NEW_IN, S_TOTAL_IN_ICU, REGION)
+              
+for(i in seq.int(16)){
+  tmp2 &lt;- mutate(group_by(tmp,REGION),
+              S_NEW_IN = lag(S_NEW_IN,i))
+  cors[i] &lt;- with(tmp2,
+       cor(S_NEW_IN, S_TOTAL_IN_ICU, use = &quot;complete.obs&quot;))
+}
+bestlag &lt;- which.max(cors)
+ggplot(data.frame(lag = 1:16, cors),
+       aes(x = lag, y = cors)) +
+  geom_point(size = 2)+
+  geom_smooth() +
+  labs(x = &quot;Lag on hospitalisations&quot;,
+       y = &quot;Correlation with ICU occupancy&quot;,
+       title = &quot;Naive lagged correlation analysis&quot;,
+       caption = &quot;@JorisMeys&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="LagInPeaks_files/figure-html/unnamed-chunk-5-1.png" width="80%" /></p>
+<p>Using an optimal lag of 8 days, the loops from the previous plots transform into almost straight lines.</p>
+<pre class="r"><code>tmp &lt;- filter(regionals,
+                    !REGION %in% c(&quot;unknown&quot;, &quot;Belgium&quot;)) %&gt;%
+  group_by(REGION) %&gt;%
+  mutate(S_NEW_IN = lag(S_NEW_IN, bestlag)) %&gt;%
+  ungroup()
+p9 &lt;- ggplot(tmp,
+             aes(x = S_NEW_IN,
+                 y = S_TOTAL_IN_ICU,
+                 group = REGION)) +
+  geom_point(aes(color = DATE),size = 2) +
+  geom_path(aes(color = DATE),lwd = 1) +
+  labs(y = &quot;&quot;, x = &quot;&quot;)
+
+p10 &lt;- p9 + facet_wrap(vars(REGION),
+             nrow = 1) +
+  labs(y = &quot;Total in ICU per 1M&quot;,
+       x = paste0(&quot;Daily hospitalisations per 1M (lag=&quot;,bestlag,&quot;)&quot;))
+p10 + 
+  p9 +
+  facet_wrap(vars(&quot;Combined&quot;)) +
+  plot_layout(widths = c(3,1),
+              guides = &quot;collect&quot;) +
+  plot_annotation(title = &quot;Lagged hospitalisations vs ICU occupancy: Belgium&quot;,
+          
+       subtitle = paste(&quot;Data downloaded from https://epistat.wiv-isp.be/Covid/ on&quot;, Sys.Date()),
+       caption = &quot;@JorisMeys&quot;)</code></pre>
+<p><img src="LagInPeaks_files/figure-html/unnamed-chunk-6-1.png" width="80%" /></p>
+<p>Again, this relation in itself doesn’t really mean anything. There’s strong dependencies between the different observations, and you can’t predict the number of patients in ICU simply based on the number of new hospital admissions 8 days earlier. But the graph confirms that <em>in this pandemic, in Belgium and during a wave</em>, the number of patients in ICU starts to drop about 8 days after the number of new admissions start to drop.</p>
+<div class="jumbotron">
+<p>
+So when you see the number of daily new hospital admissions start to drop, now you know that :
+</p>
+<ul>
+<li>
+it takes a bit over a week for the number of patients in ICU to drop.
+</li>
+<li>
+the overall relation between new admissions and ICU patients is very similar between regions.
+</li>
+<li>
+you shouldn’t use this kind of rough analysis for anything else but a rough idea about where we’re heading.
+</li>
+</ul>
+</div>
+<p><strong>disclaimer:</strong> <em>Please note that while I chose to split up over regions, the regions at hand are tricky to compare. After all, Brussels is an urban, densily populated area with a considerably smaller population than the other regions.</em></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

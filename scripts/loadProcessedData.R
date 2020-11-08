@@ -22,6 +22,6 @@ binnedmunty <- readRDS(file.path("Processed",
                                  stamp("binnedmunty",".RDS"))
                        )
 regional <- readRDS(file.path("Processed",
-                              stamp("regionalsmooth",".RDS"))
+                              stamp("regionalweekavg",".RDS"))
 )
 message("Succes!")

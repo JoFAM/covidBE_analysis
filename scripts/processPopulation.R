@@ -120,8 +120,11 @@ write.csv(totallist$MUNTY,
           file = "Data/pop_munty.csv",
           row.names = FALSE)
 write.csv(totallist$DISTRICT,
-          file = "Data/pop_district.csv")
+          file = "Data/pop_district.csv",
+          row.names = FALSE)
 write.csv(totallist$PROVINCE,
-          file = "Data/pop_province.csv")
+          file = "Data/pop_province.csv",
+          row.names = FALSE)
 write.csv(pop_region,
-          file = "Data/pop_region.csv")
+          file = "Data/pop_region.csv",
+          row.names = FALSE)

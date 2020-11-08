@@ -9,6 +9,8 @@ navbar:
     - text: "Articles"
       icon: fa-book
       menu: 
+        - text: "Lag in peak ICU"
+          href: LagInPeaks.html
         - text: "False posivites"
           href: FalseDiscoveryRate.html
         - text: "Overdispersion"

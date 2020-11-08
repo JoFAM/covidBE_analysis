@@ -15,13 +15,11 @@ message("Processing cases data.")
 rawcases<- refresh("cases",
                    "COVID19BE_CASES_AGESEX.csv",
                    process = function(x){
-                     add_totals(x,
-                                values = "CASES",
-                                groups = c("PROVINCE","REGION",
-                                           "SEX","AGEGROUP"),
-                                along = c("DATE"),
-                                name = c("All","Belgium","All","All")) %>%
-                       filter(keep_combs(REGION,PROVINCE))
+                     calc_margins(x,
+                                  values = "CASES",
+                                  grouping = "SEX, AGEGROUP / PROVINCE / REGION",
+                                  by = "DATE",
+                                  names = c("All","All","All","Belgium"))
                    })
 
 ## For tests by province (and region)
@@ -122,9 +120,18 @@ regionalraw <- full_join(casetemp,
   full_join(deathtemp, by = c("REGION","DATE")) %>%
   filter(as.Date(DATE) >= as.Date("2020-03-15")) %>%
   mutate(across(where(is.numeric),replaceby0)) %>%
-  group_by(REGION) %>%
-  mutate(POSRATE = TESTS_ALL/TESTS_ALL_POS) %>%
   as.data.frame()
+
+# Calculate per 100 k
+pop_region <- read.csv("Data/pop_region.csv") %>%
+  filter(SEX == "All", 
+         AGEGROUP == "All") %>%
+  select(REGION, POPULATION)
+
+regionalper1M <- regionalraw %>%
+  left_join(pop_region, by = "REGION") %>%
+  mutate(across(where(is.numeric) & !contains("POPULATION"),
+                ~ ./POPULATION * 1e6))
 
 # Changes can be averaged as they're absolute changes.
 regionalweekavg <- regionalraw %>%
@@ -148,6 +155,11 @@ regionalweekavg <- regionalraw %>%
 
 replacefile(regionalraw,
             "regionalraw",
+            "rds",
+            "Processed")
+
+replacefile(regionalper1M,
+            "regionalper1M",
             "rds",
             "Processed")
 
