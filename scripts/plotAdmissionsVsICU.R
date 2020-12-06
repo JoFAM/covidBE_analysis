@@ -1,6 +1,6 @@
 # Plot for new admissions versus ICU
 # author: Joris Meys
-# Date last modified: 2020-10-12
+# Date last modified: 2020-12-06
 source("scripts/downloadData.R")
 
 tmp <- full_join(filter(rawcases,
@@ -40,7 +40,7 @@ ggplot(slice, aes(x = DATE, y = smoothICU )) +
   theme_minimal() +
   labs(y = "Number of patients",
        fill = "Daily new\nhospitalisations",
-       subtitle = "Data downloaded from https://epistat.wiv-isp.be/Covid/ on 2020-10-12",
+       subtitle = "Data downloaded from https://epistat.wiv-isp.be/Covid/ on 2020-12-06",
        caption = "@JorisMeys") + 
   ggtitle("Patients in ICU - Belgium") +
   scale_fill_identity(
@@ -67,11 +67,11 @@ ggplot(slice, aes(x = DATE, y = smoothICU )) +
                xend = as.Date("2020-04-08"),
                y = 0,
                yend = 1265, col = "blue", lty = 2) +
-  annotate(geom = "text",
-           x = as.Date("2020-06-15"),
-            y = 1150,
-            label = "+40% 10 days after\npeak in new hospitalisations",
-            color = "black") +
+  # annotate(geom = "text",
+  #          x = as.Date("2020-06-15"),
+  #           y = 1150,
+  #           label = "+40% 10 days after\npeak in new hospitalisations",
+  #           color = "black") +
   geom_segment(x = as.Date("2020-03-01"),
                xend = as.Date("2020-08-21"),
                y = 74,
@@ -88,10 +88,32 @@ ggplot(slice, aes(x = DATE, y = smoothICU )) +
                xend = as.Date("2020-08-21"),
                y = 0,
                yend = 85, col = "blue", lty = 2) +
+  # annotate(geom = "text",
+  #          x = as.Date("2020-08-15"),
+  #          y = 200,
+  #          label = "+14% 10 days after\npeak in new hospitalisations",
+  #          color = "black") +
+  # New addition
+  geom_segment(x = as.Date("2020-03-01"),
+               xend = as.Date("2020-11-11"),
+               y = 1161,
+               yend = 1161, col = "red", lty = 2) +
+  geom_segment(x = as.Date("2020-10-31"),
+               xend = as.Date("2020-10-31"),
+               y = 0,
+               yend = 1465, col = "red", lty = 2) +
+  geom_segment(x = as.Date("2020-03-01"),
+               xend = as.Date("2020-11-10"),
+               y = 1465,
+               yend = 1465, col = "blue", lty = 2) +
+  geom_segment(x = as.Date("2020-11-10"),
+               xend = as.Date("2020-11-10"),
+               y = 0,
+               yend = 1465, col = "blue", lty = 2) +
   annotate(geom = "text",
            x = as.Date("2020-08-15"),
-           y = 200,
-           label = "+14% 10 days after\npeak in new hospitalisations",
+           y = 600,
+           label = "Peak in ICU total 10 days after\npeak in new hospitalisations",
            color = "black") +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b %d")
