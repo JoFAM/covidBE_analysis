@@ -20,7 +20,7 @@ calc_infections <- function(k = 0.2, r = 2.5,
   i_theor <- rnbinom(n, size = k*prev, prob = p) * kernel *
     (1 - p_immune)
   # draw the real infections
-  size = round(sum(i_theor))
+  size = round(sum(i_theor, na.rm = TRUE))
   if(size == 0 ) {
     return(0)
   } else {
@@ -42,7 +42,7 @@ calc_infections <- function(k = 0.2, r = 2.5,
 #' @param ... parameters passed to calc_infections (apart from r)
 simulate_series <- function(t, tot_pop = 11e6,
                             vacc = 100000,
-                            vacc_speed = 1000,
+                            vacc_speed = 10000,
                             immune = 3000000,
                             r1 = 2.5, r2 = 4,
                             k1 = 0.2, k2 = k1,
@@ -59,7 +59,8 @@ simulate_series <- function(t, tot_pop = 11e6,
   tot_inf <- numeric(t)
   
   #initialize 
-  p_immune <- (vacc + immune) / tot_pop
+  p_immune <- immune / tot_pop
+  p_immune <- (vacc * (1 - p_immune) + immune) / tot_pop
   
   prev_v1 <- round(prev*(1-prop_newvar))
   prev_v2 <- round(prev*prop_newvar)
@@ -89,7 +90,8 @@ simulate_series <- function(t, tot_pop = 11e6,
     vacc <- vacc + vacc_speed
     # the infected people cannot be reinfected now
     immune <- immune + tot_inf[i]
-    p_immune <- (vacc + immune) / tot_pop
+    # A fraction of vaccinated people is already immune
+    p_immune <- (vacc*(1 - p_immune) + immune) / tot_pop
     # shift the window 1
     prev_v1 <- c(prev_v1[-1],new_v1)
     prev_v2 <- c(prev_v2[-1],new_v2)
@@ -99,4 +101,42 @@ simulate_series <- function(t, tot_pop = 11e6,
   return(list(v1 = v1_inf, 
               v2 = v2_inf, 
               tot = tot_inf))
+}
+
+#' Helper function for creating the data
+to_data <- function(x, probs, var = "v"){
+  tmp <- apply(x, 2, quantile, probs)
+  data.frame(
+    ll = tmp[1,],
+    median = tmp[2,],
+    ul = tmp[3,],
+    var = rep(var, ncol(tmp))
+  )
+}
+
+#' Replicate the time series
+#'
+#' @param n the number of replicates for each time step.
+#' @param t the number of time steps
+#' @param probs the probabilities returned
+#' @param ... arguments passed on to simulate_series
+#' 
+replicate_series<- function(n, t, probs = c(0,0.5,1), ... ){
+  
+  tot <- v2 <- v1 <- matrix(numeric(n*t),ncol = t)
+  
+  for( i in seq_len(n)){
+    res <- simulate_series(t = t, ...)
+    
+    v1[i,] <- res$v1
+    v2[i,] <- res$v2
+    tot[i,] <- res$tot
+  }
+  
+  v1 <- to_data(v1, probs, var = "v1")
+  v2 <- to_data(v2, probs, var = "v2")
+  tot <- to_data(tot, probs, var = "tot")
+  
+  res <- rbind(v1, v2, tot)
+  return(res)
 }
