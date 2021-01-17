@@ -106,11 +106,13 @@ simulate_series <- function(t, tot_pop = 11e6,
 #' Helper function for creating the data
 to_data <- function(x, probs, var = "v"){
   tmp <- apply(x, 2, quantile, probs)
+  t <- ncol(tmp)
   data.frame(
     ll = tmp[1,],
     median = tmp[2,],
     ul = tmp[3,],
-    var = rep(var, ncol(tmp))
+    var = rep(var, t),
+    t = seq_len(t)
   )
 }
 
