@@ -9,6 +9,8 @@ navbar:
     - text: "Articles"
       icon: fa-book
       menu: 
+        - text: "Variants and vaccination"
+          href: NewVariant.html
         - text: "Lag in peak ICU"
           href: LagInPeaks.html
         - text: "False posivites"

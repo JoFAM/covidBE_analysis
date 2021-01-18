@@ -9,6 +9,13 @@ I try to bring some insight into what the numbers mean. And what they don't.
 </p>
 
 <div class="jumbotron">
+  <h2>New variants and vaccinations.</h2>
+  
+  <p><a href="NewVariant.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>
+</div>
+
+
+<div class="jumbotron">
   <h2>Quick analysis on evolution of ICU patients.</h2>
   
   <p><a href="LagInPeaks.html" class="btn btn-primary btn-lg" role="button">Go to the article</a>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Modelling the impact of a more transmissable variant in Belgium</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="myown.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Analyses related to COVID in Belgium</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="NewVariant.html">Variants and vaccination</a>
+    </li>
+    <li>
+      <a href="LagInPeaks.html">Lag in peak ICU</a>
+    </li>
+    <li>
+      <a href="FalseDiscoveryRate.html">False posivites</a>
+    </li>
+    <li>
+      <a href="Overdispersion.html">Overdispersion</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Modelling the impact of a more transmissable variant in Belgium</h1>
+
+</div>
+
+
+<p>There’s much to do about the new variants that get picked up everywhere. I applied the previous insights in the stochastic mechanisms behind the pandemic to model how a more transmissible variant would inflence cases in Belgium. This document explains how.</p>
+<div id="model-transmission-using-a-negative-binomial-distribution" class="section level2">
+<h2>Model transmission using a negative binomial distribution</h2>
+<p>Using a negative binomial distribution can account for the observed overdispersion in the number of infections. The initial work of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4214794/">Blumberg et al (2014)</a> described how the number of cases generated by <span class="math inline">\(s\)</span> original cases, could be described by a negative binomial distribution with a mean of <span class="math inline">\(Rs\)</span> and a dispersion parameter of <span class="math inline">\(ks\)</span>. Here <span class="math inline">\(R\)</span> is the effective reproductive number <span class="math inline">\(R_{eff}\)</span>.</p>
+<p>In a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7338915/">paper by Endo et al</a>, <span class="math inline">\(k\)</span> was estimated at about <span class="math inline">\(0.1\)</span> for a consensus <span class="math inline">\(R_0\)</span> of <span class="math inline">\(2.5\)</span>. I use their estimates as a guidance throughout this simulation.</p>
+<p>Based on UK data, <a href="https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.26.1.2002106">Leung et al</a> estimated the UK variant to be 70-80% more infective. I chose to go with 70%, translating to a <span class="math inline">\(R_0\)</span> value of 4.25.</p>
+</div>
+<div id="incorporating-measures-taken-to-curb-spread." class="section level2">
+<h2>Incorporating measures taken to curb spread.</h2>
+<p>To move from <span class="math inline">\(R_0\)</span> to the effective reproduction rate, I chose to model infection as a binomial process. The key parameter <span class="math inline">\(p\)</span> then gives a probability that a theoretical infection really leads to an infection. So a value <span class="math inline">\(p = 0.6\)</span> means that the measures taken in the population at large, prevent 40% of the infections that would occur if no action was taken. The size parameter of the binomial distribution can then be taken as distributed following the negative binomial I described earlier.</p>
+<p>Based on <span class="math inline">\(R_0\)</span>, <span class="math inline">\(R_{eff}\)</span> and the proportion of immune people, one can calculate the parameter for the binomial distribution as:</p>
+<p><span class="math display">\[
+p = \frac{R_{eff}}{R_0 (1 - p_{immune})}
+\]</span></p>
+<pre class="r"><code>function(r,reff,immune){
+  reff / (r * (1 - immune))
+}</code></pre>
+<pre><code>## function(r,reff,immune){
+##   reff / (r * (1 - immune))
+## }</code></pre>
+</div>
+<div id="estimate-of-incubation-probability." class="section level2">
+<h2>Estimate of incubation probability.</h2>
+<p>According to a <a href="https://bmjopen.bmj.com/content/10/8/e039652.full">meta-analysis by McAloon et al</a>, the probability of transmission x days after infection can be modelled by a log-normal distribution with a mean of 1.63 and a standard deviation of 0.5. This allows for creation of a kernel that gives an proxy for the probability of transmission at a given day.</p>
+<pre class="r"><code>inc_kernel &lt;- dlnorm(seq(1,14), mean = 1.63, sd = 0.5)
+# Normalization to sum to 1:
+inc_kernel &lt;- inc_kernel / sum(inc_kernel)</code></pre>
+<p>The probabilities used are given in the following graph:</p>
+<pre class="r"><code>ggplot(data.frame(x=1:14,y=inc_kernel),
+       aes(x,y)) +
+         geom_area(col = &quot;red&quot;,
+                   fill = alpha(&quot;red&quot;, 0.5),lwd = 1) +
+  theme_bw() +
+  labs(x  = &quot;days after infection&quot;, 
+       y = &quot;probability of transmission&quot;,
+       title = &quot;Probability kernel for transmission after infection&quot;)</code></pre>
+<p><img src="NewVariant_files/figure-html/unnamed-chunk-3-1.png" width="100%" /></p>
+</div>
+<div id="determining-the-seir-model" class="section level2">
+<h2>Determining the SEIR model</h2>
+<p>Actually, it’s not the standard SEIR model at all. I use the same reasoning though. I start by taking the number of cases of the previous 2 weeks. For each day, a negative binomial gives a certain number of theoretical infections. These are multiplied with the kernel probabilities and summed to end up with the theoretical new infections on that day.</p>
+<p>These theoretical infections are then corrected:</p>
+<ul>
+<li>a fraction is considered immune due to previous infection or vaccination. These are substracted.</li>
+<li>the resulting number is then used as the size parameter for a binomial distribution, which draws the final number of real infections for that day.</li>
+</ul>
+<p>This random prediction is done for each day. The number of infections is added to the immune cohort, the window shifts one day, and a new prediction is made. In this way, I simulate what could happen over the coming period.</p>
+</div>
+<div id="simulating-the-impact-of-a-new-variant." class="section level2">
+<h2>Simulating the impact of a new variant.</h2>
+<p>To simulate what would happen when a new, more transmissable variant enters Belgium, the entire procedure is done for both variants. I make a set of assumptions in this (naive) simulation:</p>
+<ul>
+<li>immunity after infection is 100%, regardless of which variant you’re infected with.</li>
+<li>in the most optimistic reports, it’s estimated that about 30% of the population in Belgium has had the virus somewhere over the past year. Let’s roll with that.</li>
+<li>Current measures in Belgium have the effective reproduction rate <span class="math inline">\(R_{eff}\)</span> floating around 0.95 the past weeks. Given a <span class="math inline">\(R_0\)</span> value of 2.5 and an immunity of about 30%, this translates to a value of 0.54 for the binomial parameter <span class="math inline">\(p\)</span>. That would mean we avoid about 46% of possible infections.</li>
+<li>About half of the infections are missed in testing. Given an average of 1900 daily confirmed cases over first two weeks of january, I assume about 3800 real cases every day.</li>
+<li>We’ve done about 100,000 vaccinations in Belgium, and I assume an average vaccination speed of 15,000 per day (for now).</li>
+<li>Let’s assume about 5% of infections are the new variant in Belgium.</li>
+</ul>
+<p>The assumptions are big and rough, and that’s because it’s sunday and I don’t have the time to finetune them. The functions for this simulation are on github.</p>
+<pre class="r"><code># This loads all the functions used for the simulations here.
+source(&quot;https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_variants.R&quot;)</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>I chose to run 1000 simulations, using the kernel and the assumptions given above. Keep in mind that the band indicate the variation in the simulation, NOT the uncertainty. We assume all parameters fixed here!</p>
+<pre class="r"><code>set.seed(123)
+
+# Simulation
+res &lt;- replicate_series(n = 1000,
+                        t = 300,
+                        prev = seq(3850, 3750, length.out = 14),
+                        kernel = inc_kernel,
+                        tot_pop = 11e6,
+                        vacc = 100000,
+                        vacc_speed = 20000,
+                        immune = 3000000,
+                        p_binom = 0.54) %&gt;%
+  mutate(across(c(ll, ul, median),
+                function(x) x/2)) %&gt;%
+  mutate(t = Sys.Date() + t,
+         var = factor(var,
+                      levels = c(&quot;v1&quot;,&quot;v2&quot;,&quot;tot&quot;),
+                      labels = c(&quot;Old variant: R0 = 2.5&quot;,
+                                 &quot;New variant: R0 = 4&quot;,
+                                 &quot;Total&quot;)))
+
+# Simulation vaccination speed lower
+res2 &lt;- replicate_series(n = 1000,
+                        t = 300,
+                        prev = seq(3850, 3750, length.out = 14),
+                        kernel = inc_kernel,
+                        tot_pop = 11e6,
+                        vacc = 100000,
+                        vacc_speed = 15000,
+                        immune = 3000000,
+                        p_binom = 0.54,
+                        prop_newvar = 0.05) %&gt;%
+  mutate(across(c(ll, ul, median),
+                function(x) x/2)) %&gt;%
+  mutate(t = Sys.Date() + t,
+         var = factor(var,
+                      levels = c(&quot;v1&quot;,&quot;v2&quot;,&quot;tot&quot;),
+                      labels = c(&quot;Old variant: R0 = 2.5&quot;,
+                                 &quot;New variant: R0 = 4&quot;,
+                                 &quot;Total&quot;)))</code></pre>
+<pre class="r"><code># Gather data
+p1 &lt;- ggplot(res, aes(x = t, fill = var)) +
+  geom_ribbon(aes(ymin = ll, ymax = ul),
+              alpha = 0.5) +
+  geom_line(aes(y = median, color = var), lwd = 1,
+            show.legend = FALSE) +
+  labs(x = &quot;Date&quot;,
+       y = &quot;Confirmed cases&quot;,
+       fill = &quot;Variant&quot;) +
+  theme_bw() +
+  ggtitle(&quot;Vaccination speed 20.000 / day \nNo change in policy&quot;) +
+  scale_x_date(date_breaks = &quot;2 month&quot;,
+               date_labels = &quot;%b&quot;) +
+  scale_y_continuous(limits = c(0,10000))
+
+# Gather data
+p2 &lt;- ggplot(res2, aes(x = t, fill = var)) +
+  geom_ribbon(aes(ymin = ll, ymax = ul),
+              alpha = 0.5) +
+  geom_line(aes(y = median, color = var), lwd = 1,
+            show.legend = FALSE) +
+  labs(x = &quot;Date&quot;,
+       y = &quot;Confirmed cases&quot;,
+       fill = &quot;Variant&quot;) +
+  theme_bw() +
+  ggtitle(&quot;Vaccination speed 15.000 / day \nNo change in policy&quot;) +
+  scale_x_date(date_breaks = &quot;2 month&quot;,
+               date_labels = &quot;%b&quot;) +
+  scale_y_continuous(limits = c(0,10000))
+
+p1 / p2 + plot_layout(guides = &quot;collect&quot;)</code></pre>
+<p><img src="NewVariant_files/figure-html/unnamed-chunk-6-1.png" width="100%" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

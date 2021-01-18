@@ -295,6 +295,9 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="NewVariant.html">Variants and vaccination</a>
+    </li>
+    <li>
       <a href="LagInPeaks.html">Lag in peak ICU</a>
     </li>
     <li>
@@ -330,7 +333,7 @@ $(document).ready(function () {
 </div>
 
 
-<p><em>This report reflects the situation on 2020-11-08.</em></p>
+<p><em>This report reflects the situation on 2021-01-18.</em></p>
 <p>COVID doesn’t always mean you end up in intensive care, but if you do, it takes several days from infection until you’re admitted to hospital and eventually ICU. This means that the effect of measures taken by a government will only be felt in ICU after a certain period of time. So one should be able to get some idea about the situation in ICU some time from now based on the current trends in new cases. As changes in testing strategy have a big impact on the reporting of cases, I use the number of new hospital admissions instead.</p>
 <pre class="r"><code># In order to run the code in this report, you first need to
 # source(&quot;scripts/downloadData.R&quot;)
@@ -343,7 +346,7 @@ for(i in thefuns){
   source(file.path(&quot;functions&quot;,i))
 }
 regional &lt;- readRDS(file.path(&quot;Processed&quot;,
-                              stamp(&quot;regionalper1M&quot;,&quot;.rds&quot;))) %&gt;%
+                              &quot;regionalper1M2020-12-06.rds&quot;)) %&gt;%
   mutate(DATE = as.Date(DATE),
          WAVE = ifelse(DATE &lt; &quot;2020-07-01&quot;,&quot;First wave&quot;, &quot;Second wave&quot;)) %&gt;%
   filter(DATE &lt; Sys.Date() - 1)</code></pre>

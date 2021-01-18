@@ -32,7 +32,7 @@ for(i in thefuns){
   source(file.path("functions",i))
 }
 regional <- readRDS(file.path("Processed",
-                              stamp("regionalper1M",".rds"))) %>%
+                              "regionalper1M2020-12-06.rds")) %>%
   mutate(DATE = as.Date(DATE),
          WAVE = ifelse(DATE < "2020-07-01","First wave", "Second wave")) %>%
   filter(DATE < Sys.Date() - 1)
