@@ -17,7 +17,7 @@ calc_infections <- function(k = 0.2, r = 2.5,
   p <- k / (k + r)
   n <- length(prev)
   # draw the theoretical infections
-  i_theor <- rnbinom(n, size = k*prev, prob = p) * kernel *
+  i_theor <- suppressWarnings(rnbinom(n, size = k*prev, prob = p)) * kernel *
     (1 - p_immune)
   # draw the real infections
   size = round(sum(i_theor, na.rm = TRUE))
@@ -91,6 +91,7 @@ simulate_series <- function(t, tot_pop = 11e6,
     # the infected people cannot be reinfected now
     immune <- immune + tot_inf[i]
     # A fraction of vaccinated people is already immune
+    p_immune <- immune / tot_pop
     p_immune <- (vacc*(1 - p_immune) + immune) / tot_pop
     # shift the window 1
     prev_v1 <- c(prev_v1[-1],new_v1)
