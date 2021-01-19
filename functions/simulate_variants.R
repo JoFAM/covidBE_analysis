@@ -39,6 +39,8 @@ calc_infections <- function(k = 0.2, r = 2.5,
 #' @param r1 the R value for the main variant
 #' @param r2 the R value for the new variant
 #' @param prop_newvar the proportion of the new variant at the start
+#' @param p_reinfect proportion of reinfection with variant 2 after immunity to variant 1 and vaccine
+#' @param p_vac probability of protection by vaccine
 #' @param ... parameters passed to calc_infections (apart from r)
 simulate_series <- function(t, tot_pop = 11e6,
                             vacc = 100000,
@@ -49,7 +51,16 @@ simulate_series <- function(t, tot_pop = 11e6,
                             prop_newvar = 0.05,
                             prev = rep(1,14),
                             kernel = rep(1/14,14),
-                            p_binom = 0.6){
+                            p_binom = 0.6,
+                            p_reinfect = 0.05,
+                            p_vac = 0.95){
+  
+  # Check p_binom
+  if(length(p_binom) == 1 ){
+    p_binom <- rep(p_binom,t)
+  } else if(length(p_binom) != t){
+    stop("p_binom has the wrong length.")
+  }
   
   # Store output
   n_window <- length(prev)
@@ -59,8 +70,15 @@ simulate_series <- function(t, tot_pop = 11e6,
   tot_inf <- numeric(t)
   
   #initialize 
-  p_immune <- immune / tot_pop
-  p_immune <- (vacc * (1 - p_immune) + immune) / tot_pop
+  immune_1 <- immune
+  immune_2 <- immune * (1 - p_reinfect)
+  
+  p_immune_1 <- immune_1 / tot_pop
+  p_immune_1 <- (vacc * (1 - p_immune_1) * p_vac + immune_1) / tot_pop
+  
+  p_immune_2 <- immune_2 / tot_pop
+  p_immune_2 <- (vacc * (1 - p_immune_2) * (1 - p_reinfect) * p_vac + immune_2) / tot_pop
+  
   
   prev_v1 <- round(prev*(1-prop_newvar))
   prev_v2 <- round(prev*prop_newvar)
@@ -72,14 +90,14 @@ simulate_series <- function(t, tot_pop = 11e6,
     new_v1 <- calc_infections(k = k1, r = r1, 
                               prev = prev_v1,
                               kernel = kernel,
-                              p_binom = p_binom,
-                              p_immune = p_immune)
+                              p_binom = p_binom[i],
+                              p_immune = p_immune_1)
     
     new_v2 <- calc_infections(k = k2, r = r2, 
                               prev = prev_v2,
                               kernel = kernel,
-                              p_binom = p_binom,
-                              p_immune = p_immune)
+                              p_binom = p_binom[i],
+                              p_immune = p_immune_2)
     
     
     v1_inf[i] <- new_v1
@@ -89,10 +107,15 @@ simulate_series <- function(t, tot_pop = 11e6,
     # Recalculate immune proportion
     vacc <- vacc + vacc_speed
     # the infected people cannot be reinfected now
-    immune <- immune + tot_inf[i]
+    immune_1 <- immune_1 + v1_inf[i] + v2_inf[i]*(1 - p_reinfect)
+    immune_2 <- immune_2 + v2_inf[i] + v1_inf[i]*(1 - p_reinfect)
     # A fraction of vaccinated people is already immune
-    p_immune <- immune / tot_pop
-    p_immune <- (vacc*(1 - p_immune) + immune) / tot_pop
+    p_immune_1 <- immune_1 / tot_pop
+    p_immune_1 <- (vacc * (1 - p_immune_1) * p_vac + immune_1) / tot_pop
+    
+    p_immune_2 <- immune_2 / tot_pop
+    p_immune_2 <- (vacc * (1 - p_immune_2) * (1 - p_reinfect) * p_vac + immune_2) / tot_pop
+    
     # shift the window 1
     prev_v1 <- c(prev_v1[-1],new_v1)
     prev_v2 <- c(prev_v2[-1],new_v2)
