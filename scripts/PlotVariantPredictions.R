@@ -5,7 +5,7 @@ library(patchwork)
 ## Get the functions needed
 source("https://raw.githubusercontent.com/JoFAM/covidBE_analysis/master/functions/simulate_variants.R")
 
-## Per jan 27, cases of the previous 2 weeks
+## Per jan 27, cases of the previous 2 weeks (up to jan 24)
 ## calculated as rolling average, multiplied by 2 to account
 ## for nondetected cases
 prevcases <- c(2046, 2002, 2019, 2026, 1995, 1975, 1969, 
