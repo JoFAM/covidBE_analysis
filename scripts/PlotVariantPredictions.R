@@ -23,14 +23,14 @@ inc_kernel <- inc_kernel / sum(inc_kernel)
 reff <- mean(prevcases[-c(1:3)] /zoo::rollmean(prevcases,4))
 # Take into account part is already new variant.
 p_binom <- calc_p(2.7, reff, 0.3)
-# reff calculated appx as:
+# r0 calculated appx as:
 # exp((log(2.5)*0.75 + log(3.4)*0.25))
 
 # pars
 all_t <- 90
 reinf_ref <- 0.1
 reinf <- 0.2
-vacc_speed <- 10000
+vacc_speed <- 20000
 vaccs <- 229863
 prop_newvar <- 0.25
 
