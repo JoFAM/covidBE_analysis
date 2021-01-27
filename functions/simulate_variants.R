@@ -79,10 +79,15 @@ simulate_series <- function(t, tot_pop = 11e6,
   p_immune_2 <- immune_2 / tot_pop
   p_immune_2 <- (vacc * (1 - p_immune_2) * (1 - p_reinfect) * p_vac + immune_2) / tot_pop
   
+  # take growth into account
+  r_newinit <- r2*p_binom[1]*(1-p_immune_2)
   
-  prev_v1 <- round(prev*(1-prop_newvar))
-  prev_v2 <- round(prev*prop_newvar)
-  
+  #find periodicity
+  period <- which.max(inc_kernel) + 1
+  multfact <- log((14:1)^(1/period))
+  pnew_prev <- prop_newvar/exp(log(r_newinit)*multfact)
+  prev_v1 <- round(prev*(1-pnew_prev))
+  prev_v2 <- round(prev*pnew_prev)
   # Generate samples
   
   for(i in seq_len(t)) {
