@@ -22,17 +22,18 @@ inc_kernel <- inc_kernel / sum(inc_kernel)
 # Calculate p_binom
 reff <- mean(prevcases[-c(1:3)] /zoo::rollmean(prevcases,4))
 # Take into account part is already new variant.
-p_binom <- calc_p(2.7, reff, 0.3)
+p_binom <- calc_p(2.9, 1.1, 0.35)
 # r0 calculated appx as:
-# exp((log(2.5)*0.75 + log(3.4)*0.25))
+#exp((log(2.5)*0.75 + log(3.4)*0.31))
 
 # pars
 all_t <- 90
 reinf_ref <- 0.1
 reinf <- 0.2
-vacc_speed <- 20000
+vacc_speed <- 10000
 vaccs <- 229863
-prop_newvar <- 0.25
+prop_newvar <- 0.31
+immune <- 3500000
 
 res1 <- replicate_series(n = 500,
                         t = all_t,
@@ -41,7 +42,7 @@ res1 <- replicate_series(n = 500,
                         tot_pop = 11e6,
                         vacc = vaccs,
                         vacc_speed = vacc_speed,
-                        immune = 3000000,
+                        immune = immune,
                         p_binom = p_binom,
                         r2 = 3.75,
                         p_reinfect = reinf_ref,
@@ -62,9 +63,9 @@ res2 <- replicate_series(n = 500,
                          tot_pop = 11e6,
                          vacc = vaccs,
                          vacc_speed = vacc_speed,
-                         immune = 3000000,
+                         immune = immune,
                          p_binom = p_binom,
-                         r2 = 3.25,
+                         r2 = 3,
                          p_reinfect = reinf_ref,
                          prop_newvar = prop_newvar) %>%
   mutate(across(c(ll, ul, median),
@@ -83,10 +84,10 @@ res3 <- replicate_series(n = 500,
                          tot_pop = 11e6,
                          vacc = vaccs,
                          vacc_speed = vacc_speed,
-                         immune = 3000000,
-                         p_binom = p_binom,
+                         immune = immune,
+                         p_binom = 0.4,
                          r2 = 3.75,
-                         p_reinfect = reinf,
+                         p_reinfect = reinf_ref,
                          prop_newvar = prop_newvar) %>%
   mutate(across(c(ll, ul, median),
                 function(x) x/2)) %>%
@@ -103,9 +104,9 @@ res4 <- replicate_series(n = 100,
                          tot_pop = 11e6,
                          vacc = vaccs,
                          vacc_speed = vacc_speed,
-                         immune = 3000000,
+                         immune = immune,
                          p_binom = p_binom,
-                         r2 = 3.25,
+                         r2 = 3,
                          p_reinfect = reinf,
                          prop_newvar = prop_newvar) %>%
   mutate(across(c(ll, ul, median),
@@ -125,7 +126,7 @@ p1 <- ggplot(res1, aes(x = t, fill = var)) +
        y = "Confirmed cases / day",
        fill = "Variant") +
   theme_bw() +
-  ggtitle(paste0("New variant: 50% more infections (R0 = 3.75) \n",reinf_ref*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
+  ggtitle(paste0("New variant: 50% more infections (R0 = 3.75) \n",reinf_ref*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average\nPrevent 42% infections (current Reff = 1.05)")) +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b") +
   coord_cartesian(ylim = c(0,15000))
@@ -137,7 +138,7 @@ p2 <- ggplot(res2, aes(x = t, fill = var)) +
        y = "Confirmed cases / day",
        fill = "Variant") +
   theme_bw() +
-  ggtitle(paste0("New variant: 30% more infections (R0 = 3.25) \n",reinf_ref*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
+  ggtitle(paste0("New variant: 20% more infections (R0 = 3) \n",reinf_ref*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b") +
   coord_cartesian(ylim = c(0,15000))
@@ -149,7 +150,7 @@ p3 <- ggplot(res3, aes(x = t, fill = var)) +
        y = "Confirmed cases / day",
        fill = "Variant") +
   theme_bw() +
-  ggtitle(paste0("New variant: 50% more infections (R0 = 3.75) \n",reinf*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
+  ggtitle(paste0("New variant: 50% more infections (R0 = 3.75) \n",reinf_ref*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average\nPrevent 60% infections")) +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b") +
   coord_cartesian(ylim = c(0,15000))
@@ -161,7 +162,7 @@ p4 <- ggplot(res4, aes(x = t, fill = var)) +
        y = "Confirmed cases / day",
        fill = "Variant") +
   theme_bw() +
-  ggtitle(paste0("New variant: 30% more infections (R0 = 3.25) \n",reinf*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
+  ggtitle(paste0("New variant: 20% more infections (R0 = 3) \n",reinf*100,"% reinfection \nVaccination: ",vacc_speed/1000,"k per day on average")) +
   scale_x_date(date_breaks = "1 month",
                date_labels = "%b") +
   coord_cartesian(ylim = c(0,15000))

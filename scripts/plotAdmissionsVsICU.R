@@ -40,7 +40,7 @@ ggplot(slice, aes(x = DATE, y = smoothICU )) +
   theme_minimal() +
   labs(y = "Number of patients",
        fill = "Daily new\nhospitalisations",
-       subtitle = "Data downloaded from https://epistat.wiv-isp.be/Covid/ on 2020-12-06",
+       subtitle = "Data downloaded from https://epistat.wiv-isp.be/Covid/ on 2020-03-05",
        caption = "@JorisMeys") + 
   ggtitle("Patients in ICU - Belgium") +
   scale_fill_identity(
@@ -111,11 +111,11 @@ ggplot(slice, aes(x = DATE, y = smoothICU )) +
                y = 0,
                yend = 1465, col = "blue", lty = 2) +
   annotate(geom = "text",
-           x = as.Date("2020-08-15"),
+           x = as.Date("2020-08-01"),
            y = 600,
            label = "Peak in ICU total 10 days after\npeak in new hospitalisations",
            color = "black") +
-  scale_x_date(date_breaks = "1 month",
+  scale_x_date(date_breaks = "2 month",
                date_labels = "%b %d")
 
 
