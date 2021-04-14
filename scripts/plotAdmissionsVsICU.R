@@ -1,6 +1,6 @@
 # Plot for new admissions versus ICU
 # author: Joris Meys
-# Date last modified: 2020-12-06
+# Date last modified: 2021-04-14
 source("scripts/downloadData.R")
 
 tmp <- full_join(filter(rawcases,
