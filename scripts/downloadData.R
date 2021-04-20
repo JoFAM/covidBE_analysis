@@ -2,7 +2,8 @@
 source("scripts/checkPackages.R")
 thefuns <- dir("functions", pattern = "\\.R")
 for(i in thefuns){
-  source(file.path("functions",i))
+  source(file.path("functions",i),
+         encoding = "UTF8")
 }
 
 
