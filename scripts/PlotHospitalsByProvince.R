@@ -2,6 +2,8 @@
 # author: Joris Meys
 # Date last modified: 2021-04-20
 source("scripts/downloadData.R")
+startdate <- as.Date("2021-01-02")
+stopdate <- Sys.Date() -1
 
 smoother <- function(x,dates){
   ksmooth(dates,x,
@@ -32,8 +34,8 @@ slice <- rawhospit %>%
     fracicu = smoothicu / smoothin
   ) %>%
   filter(between(DATE,
-                 as.Date("2021-02-01"),
-                 Sys.Date()))
+                 startdate,
+                 stopdate))
 
 ggplot(slice, aes(x=DATE)) +
   geom_area(aes(y=smoothin, color = "# patiënten\nin hospitaal"),
@@ -64,8 +66,8 @@ ggplot(slice, aes(x=DATE)) +
   scale_x_date(expand = c(0,0),
                date_breaks = "1 month",
                date_labels = "%b %d") +
-  coord_cartesian(xlim = c(as.Date("2021-02-01"),
-                           Sys.Date() - 1)) +
+  coord_cartesian(xlim = c(startdate,
+                           stopdate)) +
   guides(color = guide_legend(order = 1),
          fill = guide_colourbar(order = 2))
 
